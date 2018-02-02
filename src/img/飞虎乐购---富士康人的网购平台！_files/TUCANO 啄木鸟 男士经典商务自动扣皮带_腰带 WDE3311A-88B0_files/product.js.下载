@@ -1,0 +1,1154 @@
+﻿var tplCache = {},
+jsTpl = function(tpl, obj, isCached) {
+    var fn = tplCache[tpl];
+    if (!fn) {
+        fn = new Function("obj", "var _=[];with(obj){_.push('" +
+	    tpl.replace(/[\r\t\n]/g, " ")
+	    .replace(/'(?=[^#]*#>)/g, "\t")
+	    .split("'").join("\\'")
+	    .split("\t").join("'")
+	    .replace(/<#=(.+?)#>/g, "',$1,'")
+	    .split("<#").join("');")
+	    .split("#>").join("_.push('")
+	    + "');}return _.join('');");
+        if (!!isCached) {
+            tplCache[tpl] = fn;
+        }
+    }
+    return fn(obj);
+};
+
+    var setAmount = {
+    min : 1, max : window.itemInfo.maxBuyNum,
+    validate : function(value){
+        return /^[1-9]\d*$/.test(value);
+    },
+	amount:function(id,flag){
+	    var obj = $(id);
+	    if (obj.prop('disabled') == true)
+	    {
+	        return;
+	    }
+		var qty=obj.val();
+		if(this.validate(qty)){
+			if(flag){
+				qty++;
+			}
+			else{
+				qty--;
+		    }
+		}
+		else{
+			alert("\u8bf7\u8f93\u5165\u6b63\u786e\u7684\u6570\u91cf\uff01");
+			$(id).val(1);
+			$(id).focus();
+		}
+		return qty;
+    },
+    reduce : function(id){
+	    var obj = $(id);
+	    if (obj.prop('disabled') == true)
+	    {
+	        return;
+	    }
+		var qty=this.amount(id,false);
+		if(qty>=this.min){
+			$(id).val(qty);}
+		else{
+			alert("\u5546\u54c1\u6570\u91cf\u6700\u5c11\u4e3a"+this.min);
+			$(id).val(1);
+			$(id).focus();
+		}
+		/*if(this.data.pcount){
+			this.data.pcount=$("#buy-num").val()}
+		this.updateBuyLink(pageConfig.product.skuid,this.urlPerfix)*/
+	},
+    add : function(id){
+	    var obj = $(id);
+	    if (obj.prop('disabled') == true)
+	    {
+	        return;
+	    }
+		var qty=this.amount(id,true);
+		if(qty<=this.max){
+		    $(id).val(qty);
+	    }else{
+	        alert("\u5546\u54c1\u6570\u91cf\u6700\u591a\u4e3a"+this.max);
+	    }
+		/*if(this.data.pcount){
+			this.data.pcount=$("#buy-num").val()}
+		this.updateBuyLink(pageConfig.product.skuid,this.urlPerfix)*/
+	},
+    modify : function(id){
+		var qty=$(id).val();
+		if( !this.validate(qty)){
+			alert("\u8bf7\u8f93\u5165\u6b63\u786e\u7684\u6570\u91cf\uff01");
+			$(id).val(1);
+			$(id).focus();
+		} 
+		else if(qty<this.min){
+			alert("\u8bf7\u8f93\u5165\u6b63\u786e\u7684\u6570\u91cf\uff01");
+			$(id).val(this.min);
+			$(id).focus();
+		} 
+		else if(qty>this.max){
+			alert("\u8bf7\u8f93\u5165\u6b63\u786e\u7684\u6570\u91cf\uff01");
+			$(id).val(this.max);
+			$(id).focus();
+		} 
+		return qty;
+	}
+};
+
+function addtocart(option){
+    var defaultOptions = {
+        productQty : 1,
+        delaydefend : ''
+    };
+    option = $.extend(defaultOptions , option || {});
+    switch(option.type){
+        case 'jnbt':
+            location = '/Pages/Shopping/JnbtOrderInfo.aspx?no=' + option.productNo;
+            break;
+        case 'jdxx':
+            location = '/Pages/Shopping/DeliveryMode_jdxx.aspx?isflag=1&init=1&no=' + option.productNo;
+            break;
+        case 'mobile':
+        case 'iphone4s':
+            var delaydefend_param = option.delaydefend == '' ? '' : '&delaydefend_id=' + option.delaydefend;
+            location.href = "/Product/Mobile_ChoiceNumber.aspx?pdtno=" + option.productNo + delaydefend_param;
+            break;
+        default:
+            //location = '/Pages/Shopping/ShoppingCart.aspx';
+            location = '/Public/InitCart.aspx?datatype=redirect&product_no=' + option.productNo + '&num=' + option.productQty + '&delaydefend=' + option.delaydefend+ '&carttype=' + option.type + '&_rd=' + Math.random();
+            break;
+    }    
+}
+function showDialog(option){
+    var defaultOption = {
+        id : 'mxdialog',
+        currClass : '',
+        title : '',
+        content : '',
+        button : '',
+        autoClose : false,
+        delay : 0
+    };
+    option = $.extend(defaultOption, option || {});
+    var dialog = $('#' + option.id);
+    if (dialog.size() == 0)
+    {
+        dialog = $('<div>').addClass('ui_minWin_mask').addClass(option.currClass).attr('id', option.id).appendTo($("body"));
+        $('<div class="ui_minWin">')
+        .append($('<div class="ui_minWin_hd"><h6 class="ui_minWin_title">购物提示</h6><a href="#" class="ui_minWin_close" target="_self">关闭</a></div>'))
+        .append($('<div>').addClass('ui_minWin_bd').attr('id',option.id + '_body')).appendTo(dialog);                                
+    }
+    var ominWaiting=new MinWin({obj:"#" + option.id,spaceName:option.id + '_space'});
+    
+    dialog.attr('class','ui_minWin_mask').addClass(option.currClass);
+    dialog.find('.ui_minWin_title').html(option.title);
+    dialog.find('.ui_minWin_bd').html(option.content);
+    ominWaiting.show();
+}
+function hideDialog(option){
+    var defaultOption = {
+        id : 'mxdialog'
+    };
+    option = $.extend(defaultOption, option || {});
+    var ominWaiting=new MinWin({obj:"#" + option.id,spaceName:option.id + '_space'});
+    ominWaiting.hide();
+}
+(function(){
+    var action = {
+        xunbao : function(){
+            $("#Jinformation .ui_tab_triggers .ui_tab_triggers_item").last().trigger('click');
+        }
+    };
+    $("a[href^=#]").each(function(){        if ($(this).attr('href') != '#'){             $(this).click(function(){
+        
+                var hash = $(this).attr('href').replace("#","");
+                if (action[hash] && jQuery.isFunction(action[hash])){
+                    action[hash]();
+                }
+                var $target = $('[name=' + hash + ']');
+                if ($target.size() > 0) {
+                    var targetOffset = $target.offset().top;
+                    $('html,body').scrollTop(targetOffset);
+                }
+                return false;                
+            });        }    });
+})();
+
+(function(){
+    var b=$("#choose-color .selected,#choose-version .selected"),a=$("#choose-result"),c=[];
+    if(b.length<1){
+        $("#choose-result").hide()
+    }else{
+        b.each(function(){
+            if(!!$(this).attr("title")==true){
+                c.push("<strong>"+$(this).attr("title")+"</strong>");
+            }
+        });
+        if(c.length>0){
+            a.prepend("<em>\u5df2\u9009\u62e9</em>"+c.join("&nbsp;"));
+            $("#choose-result").show()
+        }
+    }
+})();
+
+(function() {
+    var productNo = window.itemInfo.productNo;
+    var stock_msg = $('#stock_msg');
+    function getStockStatus(product_no, provinceId) {
+        provinceId = provinceId || '';
+        var url = '/PublicAjax/ProductDetailService.aspx?action=getstockstatus&pno=' + productNo + '&provinceid=' + provinceId;
+        $.get(url, function(data) {
+            data = eval("(" + data + ")");
+            if (data.status == 0) {
+                var name = $('a[data-pid=' + data.provinceid + ']').html();
+                $(".stock_mc").hide();
+                $('.stock_mt .stock_selected').html(name + '');
+                //$('#Jwaiting,#jaddCartDisabled').show();
+                $('#Jwaiting').show();
+                $('.fh_addcart,#JinstallPay').hide();
+                stock_msg.hide();
+            }
+            else if (data.status == 1 || data.status == 2) {
+                if (window.isInstallment)
+                    $('#JinstallPay').show();
+
+                $('.fh_addcart').show();
+
+                $('#Jwaiting,#jaddCartDisabled').hide();
+                var name = $('a[data-pid=' + data.provinceid + ']').html();
+                if (data.status == 1) {
+                    stock_msg.hide();
+                    $('.stock_mt .stock_selected').html(name + '');
+                }
+                else {
+                    $('.stock_mt .stock_selected').html(name + '');
+                    stock_msg.html('' + data.desc + '').show();
+                }
+            }
+
+
+        });
+    }
+
+
+
+    function saveArrivalNotice() {
+        var result = 1;
+        $("#arrivalnotice_email,#arrivalnotice_phone").each(function() {
+            result &= $(this).validate();
+        });
+        if (result == 1) {
+            var url = '/PublicAjax/ProductDetailService.aspx?action=arrivalnotice&type=save&t=' + Math.random();
+            $.post(url, { productNo: productNo, email: $("#arrivalnotice_email").val(), phone: $("#arrivalnotice_phone").val() }, function(data) {
+                data = eval("(" + data + ")");
+                if (data.result) {
+                    alert(data.msg);
+                    hideDialog();
+
+                } else {
+                    if (data.errorCode == 'login')
+                        location = data.loginUrl;
+                    else
+                        alert(data.errorCode);
+                }
+            });
+        }
+        return false;
+    }
+
+    getStockStatus(productNo);
+
+    $(".ui_quantity_redu").click(function() {
+        setAmount.reduce('.ui_quantity_txt')
+    });
+    $(".ui_quantity_plus").click(function() {
+        setAmount.add('.ui_quantity_txt')
+    });
+    $(".ui_quantity_txt").blur(function() {
+        setAmount.modify('.ui_quantity_txt')
+    });
+
+    $("#Jwaiting").click(function() {
+        var othis = $(this);
+        if (othis.hasClass('dis')) {
+            return false;
+        }
+        var url = '/PublicAjax/ProductDetailService.aspx?action=arrivalnotice&type=get&t=' + Math.random();
+        $.get(url, { productNo: productNo }, function(data) {
+            data = eval("(" + data + ")");
+            if (data.result) {
+                var html = [];
+                html.push('<div class="vi_minWaiting_content">');
+                html.push('<p class="lbl">如果该商品到货，您可以通过邮件或手机短信获取通知:</p>');
+                html.push('<table border="0" cellpadding="0" cellspacing="0" class="vi_minWaiting_table">');
+                html.push('<tbody><tr><td class="tdlbl"><em class="ui_iconImpt">*</em>邮箱地址：</td>');
+                html.push('<td><input type="text" class="txt" name="arrivalnotice_email" defValue="请输入邮箱地址" id="arrivalnotice_email" value="' + data.data.email + '"></td></tr>');
+                html.push('<tr><td class="tdlbl"><em class="ui_iconImpt">*</em>手机号码：</td>');
+                html.push('<td><input type="text" class="txt JtxtFB" name="arrivalnotice_phone" defValue="请输入手机号码" id="arrivalnotice_phone" value="' + data.data.phone + '"></td></tr>');
+                html.push('<tr><td class="tdlbl">&nbsp;</td><td><a href="#" hidefocus="true" class="btn">提交</a></td></tr></tbody></table></div>');
+                showDialog({ currClass: 'vi_minWaiting', content: html.join(''), title: '到货通知' });
+
+                $("#arrivalnotice_email,#arrivalnotice_phone").setInput();
+                $(".vi_minWaiting_content a").bind('click', saveArrivalNotice);
+            } else {
+                if (data.errorCode == 'login')
+                    location = data.loginUrl;
+            }
+        });
+        return false;
+    });
+    $("#JbuyNow").click(function() {
+        var othis = $(this);
+        if (othis.hasClass('dis')) {
+            return false;
+        }
+
+        if ($("input[name=butie]").prop('checked')) {
+            addtocart({
+                type: 'jnbt',
+                productNo: productNo
+            });
+        }
+        else if ($("input[name=mobile]").prop('checked')) {
+            addtocart({
+                type: 'mobile',
+                productNo: productNo
+            });
+        }
+        else {
+            var qty = $('.ui_quantity_txt').val();
+            var delaydefend = $('input[name=yanbao]:checked').val();
+            var carttype = '';
+            var url = '/Public/InitCart.aspx?ajax=buy&datatype=jsonp&product_no=' + productNo + '&num=' + qty + '&delaydefend=' + delaydefend + '&carttype=' + carttype + '&_rd=' + Math.random();
+            if (window.isTuanProduct) {
+                var discountPrice = $(".vi_price_groupbuy .ui_price .discount").html();
+                var arr = discountPrice.match(/\d+([.]\d+)?/gi);
+                var tuanUrl = $('.vi_summary_price .vi_price_groupbuy .ui_access').attr('href');
+                var content = '<div class="ui_minWin_bd">\
+    	<p class="vi_minTuan_content">\
+        	以团购价购买可优惠<em>' + (arr[0]) + '</em>元，是否参加\
+        </p>\
+        <div class="vi_minTuan_op">\
+        	<a href="#" class="no" hidefocus="true">否</a>\
+            <a href="' + tuanUrl + '" target="_blank" class="yes" hidefocus="true">是</a>\
+        </div>\
+    </div>';
+                showDialog({ currClass: 'vi_minTuan', content: content, title: '购物提示' });
+                $('.vi_minTuan .no').click(function() {
+                    var qty = $('.ui_quantity_txt').val();
+
+                    $.ajax({
+                        url: url,
+                        dataType: "jsonp",
+                        cache: false,
+                        success: function(data) {
+
+                            if (data.result == 1) {
+
+                                location.href = "/Pages/Shopping/ShoppingCart.aspx";
+                                return false;
+
+                            }
+                            if (data.result == 4) {
+
+
+                                var content = '<div class="ui_minWin_bd">\<p class="vi_minTuan_content" style="width: 300px;padding: 10px 70px;">'
+                    + data.message + '</p>\</div>';
+                                showDialog({ currClass: 'vi_minTuan', content: content, title: '购物提示' });
+                            }
+
+                        }
+                    });
+
+                })
+            }
+            else {
+                $.ajax({
+                    url: url,
+                    dataType: "jsonp",
+                    cache: false,
+                    success: function(data) {
+
+                        if (data.result == 1) {
+                            location.href = "/Pages/Shopping/ShoppingCart.aspx";
+                            return false;
+
+                        }
+                        if (data.result == 4) {
+
+
+                            var content = '<div class="ui_minWin_bd">\<p class="vi_minTuan_content" style="width: 300px;padding: 10px 70px;">'
+                    + data.message + '</p>\</div>';
+                            showDialog({ currClass: 'vi_minTuan', content: content, title: '购物提示' });
+                        }
+
+                    }
+                });
+            }
+        }
+        return false;
+    });
+
+    $("input[name=butie]").click(function() {
+        var checked = $(this).prop('checked');
+        if (checked) {
+            $('.ui_quantity_txt').val(1).prop('disabled', true);
+            $('#JinstallPay').hide();
+            $("#JaddCart").addClass('vi_btn_addCart_dis')
+            $(".vi_yanbao").hide();
+        }
+        else {
+            if (window.isInstallment)
+                $('#JinstallPay').show();
+            $("#JaddCart").removeClass('vi_btn_addCart_dis')
+            $('.vi_yanbao').show();
+            $('.ui_quantity_txt').prop('disabled', false);
+        }
+    });
+
+
+    function showMiniCart() {
+        var qty = $('.ui_quantity_txt').val();
+        var delaydefend = $('input[name=yanbao]:checked').val();
+        var carttype = '';
+        var url = '/Public/InitCart.aspx?ajax=buy&datatype=jsonp&product_no=' + productNo + '&num=' + qty + '&delaydefend=' + delaydefend + '&carttype=' + carttype + '&_rd=' + Math.random();
+        $.ajax({
+            url: url,
+            dataType: "jsonp",
+            cache: false,
+            success: function(data) {
+
+                if (data.result == 1) {
+                    var url = '/PublicAjax/ProductDetailService.aspx?action=minicart';
+                    $.ajax({
+                        url: url,
+                        data: { productNo: productNo },
+                        success: function(data) {
+                            data = eval("(" + data + ")");
+                            showDialog({ currClass: 'vi_minCart', content: data.content, title: '购物提示' });
+                            $(".vi_minCart_content .btn_continues").unbind('click').click(function() {
+                                hideDialog();
+                                $("#Cart_num").html($(".vi_minCart .vi_minCart_content .success_hint .des em").html());
+                                $("#Jcart_nums").html($(".vi_minCart .vi_minCart_content .success_hint .des em").html());
+                                $("#Jcart_amount").html($(".vi_minCart .vi_minCart_content .success_hint .des span em").html());
+                                return false;
+                            });
+                        },
+                        cache: false
+                    });
+
+                }
+                if (data.result == 4) {
+
+
+                    var content = '<div class="ui_minWin_bd">\<p class="vi_minTuan_content" style="width: 300px;padding: 10px 70px;">'
+                    + data.message + '</p>\</div>';
+                    showDialog({ currClass: 'vi_minTuan', content: content, title: '购物提示' });
+                }
+
+            }
+        });
+    }
+
+    // 迷你购物车+团购提示2
+    $("#JaddCart").click(function() {
+        var othis = $(this);
+        if (othis.hasClass('vi_btn_addCart_dis') || othis.hasClass('dis')) {
+            return false;
+        }
+        var checked = $("input[name=butie]").prop('checked');
+        if (checked) {
+            addtocart({
+                type: 'jnbt',
+                productNo: productNo
+            });
+        }
+        else {
+            if (window.isTuanProduct) {
+                var tuanUrl = $('.vi_summary_price .vi_price_groupbuy .ui_access').attr('href');
+                var content = '<p class="vi_minTuan_content">如需以团购优惠价购买则需参加团购，单独下单</p><div class="vi_minTuan_op">\
+        	            <a href="#" class="no" hidefocus="true">加入购物车</a><a href="' + tuanUrl + '" target="_blank" class="yes" hidefocus="true">参加团购</a></div></div>';
+                showDialog({ currClass: 'vi_minTuan', content: content, title: '购物提示' });
+                $('.vi_minTuan .no').click(function() {
+                    showMiniCart();
+                    return false;
+                })
+            }
+            else {
+                showMiniCart();
+            }
+
+        }
+        return false;
+    });
+
+    $(".vi_yanbao .concel").click(function() {
+        $("input[name]:checked").each(function() {
+            $(this).prop('checked', false);
+        });
+        return false;
+    });
+
+    // 收藏成功
+    $("#Jcollect").click(function() {
+        var othis = $(this);
+        if (othis.hasClass('dis')) {
+            return false;
+        }
+        var url = '/PublicAjax/ProductDetailService.aspx?action=AddFavorite&t=' + Math.random();
+        $.get(url, { productNo: productNo, dialog: 0 }, function(data) {
+            data = eval("(" + data + ")");
+            if (data.result) {
+                showDialog({ currClass: 'vi_minFavorite', content: data.content, title: '收藏提示' });
+                $(".vi_btn_collected").show();
+                $("#Jcollect").hide();
+                $("#collect_phone").setInput();
+                $(".vi_minFavorite_mobile .btn").click(function() {
+                    var result = $("#collect_phone").validate();
+                    if (!result) {
+                        return false;
+                    }
+                    var url = '/PublicAjax/ProductDetailService.aspx?action=phonefavorite';
+                    var title = $('.vi_summary .vi_mainShow_name .ui_pname').html();
+                    var phone = $("#collect_phone").val();
+                    $.ajax({
+                        url: url,
+                        type: 'post',
+                        cache: false,
+                        data: { productNo: productNo, title: escape(title), phone: phone },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.result) {
+                                alert('收藏成功');
+                            }
+                            else {
+                                if (data.errorCode == 'login')
+                                    location = data.loginUrl;
+                                else if (data.errorCode == 'PhoneFormatError')
+                                    location = data.loginUrl;
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            } else {
+                if (data.errorCode == 'login')
+                    location = data.loginUrl;
+            }
+        });
+        return false;
+    });
+
+
+
+
+    $(".stock_list a").click(function(e) {
+        var obj = $(e.target);
+        var provinceId = obj.attr('data-pid');
+        getStockStatus(productNo, provinceId);
+        $("#Jstock").removeClass('stock_curr');
+        $(".stock_mc").hide();
+        try {
+            event.preventDefault();
+        } catch (e) {
+
+        }
+        return false;
+    });
+    $(".stock_list .close").click(function(e) {
+        $("#Jstock").removeClass('stock_curr');
+        $(".stock_mc").hide();
+    });
+
+    $.ajax({
+        cache: false,
+        dataType: 'text',
+        url: '/PublicAjax/ProductDetailService.aspx?action=getuserfavoritestatus',
+        data: { productNo: productNo },
+        success: function(data) {
+            data = eval("(" + data + ")");
+            if (data.favoriteStatus) {
+                $(".vi_btn_collected").show();
+                $("#Jcollect").hide();
+            }
+        }
+    });
+    $.ajax({
+        cache: false,
+        dataType: 'text',
+        url: '/PublicAjax/ProductDetailService.aspx?action=commentcount',
+        data: { productNo: productNo },
+        success: function(data) {
+            data = eval("(" + data + ")");
+            var arr = ['半星', '一颗星', '一颗半星', '二颗星', '二颗半星', '三颗星', '三颗半星', '四颗星', '四颗半星', '五颗星'];
+            var grade = Math.ceil(data.productGrade / 0.5) || 8;
+            $(".vi_summary .ui_psorce").attr('title', arr[grade - 1]).find("em").css({ width: (grade * 10) + '%' });
+            $(".vi_summary .vi_pro_comment .num").html('(共' + data.commentCount + '条评论)');
+        }
+    });
+
+    if (!window.cluster || window.cluster.length == 0)
+        return;
+    var cluster = window.cluster;
+    var colorVersions = {};
+    var pdt_colors = {};
+    var choose_colors = $("#choose-color ul");
+    var choose_versions = $("#choose-version ul");
+    for (var i = 0; i < cluster.length; i++) {
+        var version = cluster[i].Version;
+        if (choose_versions.size() == 0)
+            version = null;
+        colorVersions[cluster[i].Color + '_' + version] = cluster[i];
+    }
+    var alert_choose_version = $("#choose-version .lbl").html(); alert_choose_version = alert_choose_version ? alert_choose_version.replace("：", "") : "";
+    var alert_choose_color = $("#choose-color .lbl").html(); alert_choose_color = alert_choose_color ? alert_choose_color.replace("：", "") : "";
+    function changeColorVersion(flag) {
+        var currColor = $.trim(choose_colors.find(".selected").find("a").html());
+        if (currColor && choose_versions.size() > 0) {
+            choose_versions.find("li").each(function() {
+                var othis = $(this);
+                var version = $.trim(othis.html());
+                var cs = colorVersions[currColor + '_' + version];
+                if (!(version && cs)) {
+                    var alert_msg = currColor + version + '无货';
+                    othis.attr('class', 'dis').css("cursor", 'not-allowed').attr('title', alert_msg); //.html(othis.find("a").html());
+                }
+                else {
+                    if (othis.hasClass('dis'))
+                        othis.removeClass('dis');
+                    othis.css('cursor', 'pointer').css('title', version);
+                }
+            });
+        }
+        var currVersion = $.trim(choose_versions.find(".selected").attr('title'));
+        if (currVersion && choose_colors.size() > 0) {
+            choose_colors.find("li").each(function() {
+                var othis = $(this);
+                var color = $.trim(othis.find("a").html());
+                var cs = colorVersions[color + '_' + currVersion];
+                if (!(color && cs)) {
+                    var alert_msg = color + currVersion + '无货';
+                    //othis.attr('class','dis').css("cursor",'not-allowed').attr('title',alert_msg).html(color);  
+                }
+                else {
+                    if (othis.hasClass('dis'))
+                        othis.removeClass('dis');
+                }
+            });
+        }
+        if (!flag) {
+            $("#choose-result").html("<em>已选择</em>" + (currColor ? "<strong>" + currColor + "</strong>" : "") + (currColor && currVersion ? "，" : "") + (currVersion ? "<strong>" + currVersion + "</strong>" : "")
+				+ (currColor ? "" : "<span class='item-warnning'><s></s>请" + alert_choose_color + "</span>") + (currVersion ? "" : "<span class='hint'><s></s>请" + alert_choose_version + "</span>"));
+            if (!currVersion) {
+                $("#JbuyNow,#jaddCartDisabled,#JaddCart,#Jwaiting,#jzerobuyCartDisabled,#JinstallPay,#Jcollect").addClass('dis');
+            } else {
+                $("#JbuyNow,#jaddCartDisabled,#JaddCart,#Jwaiting,#jzerobuyCartDisabled,#JinstallPay,#Jcollect").removeClass('dis');
+            }
+
+
+            currVersion ? $("#choose-version").attr('class', 'vi_choose_attr') : $("#choose-version").attr('class', 'vi_choose_attr vi_choose_attr_dis');
+        }
+    }
+
+    function checkColorVersion(color, version) {
+        var cv = colorVersions[color + '_' + version];
+        if (cv)
+            return cv;
+        else
+            return 0;
+    }
+    //if (choose_colors.size() > 0 && choose_versions.size() > 0)
+    //{
+    changeColorVersion(true);
+
+    choose_colors.find("li").bind('click', function() {
+        var othis = $(this);
+        if (othis.hasClass("dis")) return;
+        choose_colors.find(".selected").removeAttr("class");
+        othis.attr('class', "selected");
+        var color = $.trim(othis.find("a").html());
+        var version = $.trim(choose_versions.find(".selected").html());
+        if (version.length > 0) { version = $.trim(choose_versions.find(".selected").html()); } else { version = null; }
+        var sid = checkColorVersion(color, version);
+        if (sid) {
+            window.location = "/product/" + sid.ProductNo + ".html";
+        } else {
+            changeColorVersion();
+        }
+        return false;
+    }).find("a").attr("href", "#none");
+    choose_versions.find("li").unbind("click").click(function() {
+        var othis = $(this);
+        if (othis.hasClass("dis")) return;
+        var version = $.trim(othis.html());
+        var color = $(".selected a", choose_colors).html();
+        var sid = checkColorVersion(color, version);
+        if (sid) {
+            window.location = "/product/" + sid.ProductNo + ".html";
+        } else {
+            changeColorVersion();
+        }
+    });
+    //}
+})();
+(function($){
+    $.fn.setInput = function(){
+        return this.each(function(){
+            var defaultValue = $(this).attr('defValue');
+            if (defaultValue){
+               return $(this).focus(function(){
+                    var othis = $(this);
+                    if (othis.val() == defaultValue) {
+                        othis.val('');
+                        othis.css('color',"#000000");
+                    }
+                }).blur(function(){
+                    var othis = $(this);
+                    if (othis.val() == "") {
+                        othis.val(defaultValue);
+                        othis.css('color',"#ccc");
+                    }
+                });
+            }
+            return this;
+        });
+    };
+})(jQuery);
+(function(){
+        var productNo = window.itemInfo.productNo;
+        var _cache = {};
+        var actions = {
+            informations :{
+                productattribute : function(panel,data){
+                    panel.html(data);
+                },
+                knowledge : showKnowledge
+            }
+        };
+	     //产品知识模板
+	    var knowledgeTpl = '<dl class="vi_knowledge_item">\
+                                <dt>\
+                                    <span class="title"><#=KNOWLEDGE_DES#></span>\
+                                    <span class="icon"></span>\
+                                </dt>\
+                                <dd>\
+                                    <span class="icon_trag"></span>\
+                                    <p class="cont"><#=KNOWLEDGE_ANS#></p>\
+                                </dd>\
+                            </dl>',
+	    knowledgePagesTopTpl = '<span class="num"><em><#=page#></em>/<#=pages#></span>\
+                              <a href="javascript:;" page="<#=pre#>">&lt;</a>\
+                              <a href="javascript:;" class="btn_next"page="<#=next#>">&gt;</a>',
+	    knowledgePagesFooterTpl = '<a href="javascript:;" page="<#=pre#>" class="pre">上一页</a>\
+                                        <$pageloop$>\
+                                        <a href="javascript:;" page="<#=next#>"  class="next">下一页</a>\
+                                        <span class="num">共<em><#=pages#></em>页</span>',
+	    knowledgeNoDataTpl = '暂无相关的产品知识信息',
+	    bocInstallmentTpl = '<div class="vi_minInstallPay_list">\
+	                <table cellpadding="0" cellspacing="0" class="vi_minInstallPay_table">\
+	                <tbody><tr><th width="110">银行</th><th>3期</th><th>6期</th><th>9期</th><th>12期</th></tr><#=data#></tbody></table></div>\
+                <div class="vi_minInstallPay_process">\
+	                <p style="color:#C00" id="icbc_installment_fee_tips">手续费最终以银行扣取为准！如有疑问请联系发卡行！</p>\
+	                <p>信用卡在线分期，无需人工审核，支付更快速！更放心！</p>\
+                    <p>分期付款流程图：<img src="/cdn/image/vi/process.png" alt="分期付款流程图"></p>\
+                </div>\
+                <div class="vi_minInstallPay_op">\
+	                <a href="#" class="btn_apply" hidefocus="true">申请分期付款</a>\
+                    <a href="/Pages/Help_Internet/FenQiFuKuan_V2.aspx" target="_blank" class="viewProcess" hidefocus="true">查看分期付款说明</a>\
+                </div>',
+	    bocInstallmentIteratorTpl = '<tr><td><img src="/cdn/image/vi/<#=logo#>" width="100" height="40"></td><td><#=b3#></td><td><#=b6#></td><td><#=b9#></td><td><#=b12#></td></tr>',
+	    PageBound = function(pages, page, count) {
+	    var me = this, NUM = 10, HF = 5, i, arr = [], pres = page - HF, nexts = page + HF, min = 1, max = pages, pre, next;
+	    pre = page - 1 < 1 ? 1 : page - 1;
+	    next = page + 1 > pages ? pages : page + 1;
+	    if (pages < NUM) {
+	        for (i = 1; i <= pages; i++) {
+	            arr.push(i);
+	        }
+	        return {
+	            min: min, max: max, pres: pres, nexts: nexts, pages: pages, page: page, loops: arr, count: count, pre: pre, next: next
+	        };
+	    }
+
+
+	    if (pres <= 0) {
+	        nexts -= pres;
+	        pres = 1;
+	    }
+	    nexts = nexts > pages ? pages : nexts;
+
+	    for (i = pres; i <= nexts; i++) {
+	        arr.push(i);
+	    }
+
+	    return {
+	        min: min, max: max, pres: pres, nexts: nexts, pages: pages, page: page, loops: arr, count: count, pre: pre, next: next, first: 1, last: pages
+	    };
+	};
+	
+        validateSetting.empty.info_css = 'ui_hint_err';
+        validateSetting.error.info_css = 'ui_hint_err';
+        $.extend(validateOptions, {
+            "arrivalnotice_email": { "require": true, datatype: validateRules.isEmail, tips: { empty: "邮箱不能为空", error: '邮箱格式不正确', focus: '', success: ''} },
+            "arrivalnotice_phone": { "require": true, datatype: validateRules.isMobile, tips: { empty: "手机号码不能为空", error: "手机号码格式不正确", focus: '', success: ''} },
+            "collect_phone": { "require": true,container : 'collect_phone_error',  datatype: validateRules.isMobile, tips: { empty: "手机号码不能为空", error: "手机号码格式错误，请重新输入", focus: '', success: ''} }
+        });
+        
+        if ($("#JPreviewSmall .list").size()<2){
+            $("#JPreviewSmall .list").after($("#JPreviewSmall .list").clone());
+        }
+		var commConfig = {triggers:[],panels:'.list',par:'#JPreviewSmall',autoPlay:0,sliderDirection:'left',sliderIsCarousel:true,
+			afterInit:function(cfg){
+				var me = this,left = $('.btn_left',me.par),right = $('.btn_right',me.par);
+			    if(this.length < 2){
+			        //left.hide();
+			        //right.hide();
+			        //return;
+			    }
+
+				left.bind('mousedown',me, function(e){e.data.controlPre();e.preventDefault()}).hover(function(){$(this).addClass('btn_left_hover')},function(){$(this).removeClass('btn_left_hover')});
+				right.bind('mousedown',me, function(e){e.data.controlNext();e.preventDefault();}).hover(function(){$(this).addClass('btn_right_hover')},function(){$(this).removeClass('btn_right_hover')});
+			}
+		};
+        new efeihu.Slider(commConfig);
+				// 分期付款弹窗提示
+		$("#JinstallPay").click(function(){
+				//var ominInstallPay=new MinWin({obj:"#JminInstallPay",spaceName:"JminInstallPay"});
+				//ominInstallPay.show();
+                var othis = $(this);
+		        if (othis.hasClass('dis')){
+		            return false;
+		        }
+				var installmentData = eval("(" + $("#installment-data").html() + ")");
+				
+				var bankInfo = [];
+				var hasIcbc = false;
+				$.each(installmentData,function(index,data){
+				    for(var p in data){
+				        if (p == 'name' && data[p] =='icbc')
+				            hasIcbc = true;
+				        if ($.inArray(p,['b3','b6','b9','b12']) != -1)
+				        {
+				            data[p] = data[p][0] ? "<em>" + data[p][0] +"</em>×" + data[p][1] + "期" : '-';
+				        }
+				    }
+				    bankInfo.push(jsTpl(bocInstallmentIteratorTpl,data,true));
+				})
+				var content = jsTpl(bocInstallmentTpl,{data : bankInfo.join('') },true) ;
+				
+				showDialog({currClass : 'vi_minInstallPay', title : '分期付款',content : content});
+				hasIcbc || $('#icbc_installment_fee_tips').hide();
+				$(".vi_minInstallPay .btn_apply").click(function(){
+                    var qty = $('.ui_quantity_txt').val();
+                    var delaydefend = $('input[name=yanbao]:checked').val(); 
+                    var carttype = '';
+                    var url = '/Public/InitCart.aspx?ajax=buy&datatype=jsonp&product_no=' + productNo + '&num=' + qty + '&delaydefend=' + delaydefend+ '&carttype=installment';
+          
+                    $.ajax({
+                        url : url,
+                        dataType : 'jsonp',
+                        cache : false,
+                        success : function(data){
+                            location = '/Pages/Shopping/ShoppingCart-fq.aspx';
+                        }
+                    });
+                    return false;
+				});
+				return false;
+			});
+			
+        var initKnowledgeEvent = function(withSerchKey) {
+            $(".vi_knowledge_item", "#Jknowledge").click(function() {                 
+                $(this).toggleClass("vi_knowledge_item_curr");
+            });
+            $(".vi_knowledge_item1", "#Jknowledge").click(function() {
+                var same = false;
+                same = !($(".kl_sprites", this).hasClass("kl_sprites_open"));
+                $(".kl_sprites", ".knowledge_list").removeClass("kl_sprites_open");
+                $(".kl_bd", ".knowledge_list").hide();
+                $(".kl_sprites", this).toggleClass("kl_sprites_open", same);
+                $(this).nextAll().toggle(same);
+                $(this).css('color', '#bb6083');
+            });
+            $(".vi_knowledge a[page]").click(function() {
+                var pageIndex = $(this).attr('page');
+                showKnowledgePager(pageIndex,withSerchKey);
+            });
+        };
+        
+        function showKnowledgePager(pageIndex,withSerchKey){
+            pageIndex = pageIndex || 1;
+            var q = '';
+            if (withSerchKey)
+                q = $("#knowledgeKeyword").val();
+            $.ajax({
+                url :  '/PublicAjax/ProductDetailService.aspx',
+                cache : false,
+                data : { action :  'knowledge',productNo : productNo , q : q , page : pageIndex},
+                success : function(data){
+                    showKnowledge($(".vi_knowledge"), data,withSerchKey);
+                }
+            });
+        }
+    
+        function showKnowledge(panel,data,withSerchKey){
+            data = eval("(" + data + ")");
+            var dt = data.data, knowledgeList = dt.list,_arr = [],_pageArr=[];
+            var page_top = $(".ui_pageSmall",panel),page_footer = $(".ui_pagewrap",panel);
+            
+            if (knowledgeList.length == 0){                
+                $("#Jknowledge",panel).html(knowledgeNoDataTpl);                
+                page_top.html('');
+                page_footer.html('');
+                return;
+            }
+            $.each(knowledgeList, function(i) {
+                _arr[i] = unescape(jsTpl(knowledgeTpl, this, true));
+            });
+            $("#Jknowledge",panel).html(_arr.join(''));
+            page_top.html(unescape(jsTpl(knowledgePagesTopTpl, dt, true)));
+            pageBound = new PageBound(dt.pages, dt.page, dt.count);
+            strPages = unescape(jsTpl(knowledgePagesFooterTpl, pageBound, true));
+            for (j = 0, loopLen = pageBound.loops.length; j < loopLen; j++) {
+                var _j = pageBound.loops[j];
+                currPageStr = pageBound.page == _j ? ' class="curr dis" ' : '';
+                eventStr = currPageStr == '' ? ' page="' + _j + '" ' : '';
+                _pageArr.push('<a href="javascript:;"' + currPageStr + eventStr + '>' + _j + '</a>');
+            }
+            _pageArr = _pageArr.join('')
+            if (typeof pageBound.first != 'undefined' && pageBound.loops[0] != 1) {
+                _pageArr = '<a href="javascript:;" page="' + pageBound.first + '">' + pageBound.first + '</a>' + '<a href="javascript:;" page="' + pageBound.pres + '">...</a>' + _pageArr;
+            }
+            if (typeof pageBound.last != 'undefined' && pageBound.loops[loopLen - 1] != pageBound.last) {
+                _pageArr = _pageArr + '<a href="javascript:;" page="' + pageBound.nexts + '">...</a>' + '<a href="javascript:;" page="' + pageBound.last + '">' + pageBound.last + '</a>';
+            }
+            page_footer.html(strPages.replace('<$pageloop$>', _pageArr));
+            //如果为第一页,不显示"上一页",如果为最后一页,不显示"下一页"
+            if (Number(pageBound.page) == 1) {
+                $('.pre', page_footer).addClass('dis');
+                $('a', page_top).eq(0).addClass('dis');
+            }
+            if (Number(pageBound.page) == Number(pageBound.max)) {
+                $('.next', page_footer).addClass('dis');
+                $('a', page_top).eq(1).addClass('dis');
+            }
+            
+            initKnowledgeEvent(withSerchKey);
+        };        
+        
+        var Jtaocan = new efeihu.Tab({eventType : 'click',triggers:".ui_tab_triggers_item",panels:'.ui_tab_item ',par:'#Jtaocan',currClass:'ui_tab_triggers_curr'});
+        $("#Jtaocan .ui_tab_item").each(function(e,i){
+            var othis=$(this);
+            var otaocanItem=new Object();
+            otaocanItem.othis=othis;
+            otaocanItem.orialPrice=othis.find(".vi_taocan_total .price_yuanjia em");
+		    otaocanItem.totalPrice=othis.find(".vi_taocan_total .price_taocan em");
+		    otaocanItem.less=othis.find(".vi_taocan_total .price_discount em");
+		    otaocanItem.totalCount=othis.find(".vi_taocan_total #taocan_count");
+		    otaocanItem.priceSelector=".ui_pprice_e em";
+		    otaocanItem.pricemSelector=".ui_pprice_m em";
+		    otaocanItem.countSelector=".ui_pprice_m #taocan_count";
+		    otaocanItem.opros=othis.find(".vi_taocan_pro").not(".vi_taocan_mainPro");
+			otaocanItem.oproSelectedCSS="vi_taocan_pro_selected";
+			var option = $.extend (commConfig , {panels:'.ui_slideSwift_item',par : othis, afterInit:function(cfg){
+		        if(this.length < 2){
+		            return;
+		        }
+		        
+		        var me = this,left = $('.ui_slideSwift_btnLeft',me.par),right = $('.ui_slideSwift_btnRight',me.par);			   
+                
+                if(me.length>1){right.removeClass('ui_slideSwift_btnRight_dis'); var rightGo=true; var leftGo=true;}           
+                
+                left.bind('mousedown',me, function(e){ if(me.index<1){return false;}else{rightGo=true;} e.data.controlPre();e.preventDefault();}).click(function(){if(me.index==0){ $(this).addClass('ui_slideSwift_btnLeft_dis');right.removeClass('ui_slideSwift_btnRight_dis'); } else{ $(this).removeClass('ui_slideSwift_btnLeft_dis');right.removeClass('ui_slideSwift_btnRight_dis');}});
+			    right.bind('mousedown',me, function(e){if(!rightGo){return false;};e.data.controlNext(); if(me.index==(me.length-1)){rightGo=false;}; e.preventDefault();}).click(function(){if(me.index==(me.length-1)){$(this).addClass('ui_slideSwift_btnRight_dis');left.removeClass('ui_slideSwift_btnLeft_dis'); }else if(me.index<(me.length-1)){$(this).removeClass('ui_slideSwift_btnRight_dis');left.removeClass('ui_slideSwift_btnLeft_dis');}else {$(this).removeClass('ui_slideSwift_btnRight_dis');left.addClass('ui_slideSwift_btnLeft_dis');}});
+                
+			    
+//			    left.bind('mousedown',me, function(e){e.data.controlPre();e.preventDefault()}).hover(function(){$(this).addClass('ui_slideSwift_btnLeft_dis')},function(){$(this).removeClass('ui_slideSwift_btnLeft_dis')});
+//			    right.bind('mousedown',me, function(e){e.data.controlNext();e.preventDefault();}).hover(function(){$(this).addClass('ui_slideSwift_btnRight_dis')},function(){$(this).removeClass('ui_slideSwift_btnRight_dis')});
+		        
+		    }});
+		
+            new efeihu.Slider(option);
+            othis.find(".selected_icon").bind('click',{taocan:otaocanItem},function(event){
+                var taocan=event.data.taocan;
+			    var pro=$(this).closest(".vi_taocan_pro");
+			    if(pro.hasClass(taocan.oproSelectedCSS)){
+				    pro.removeClass(taocan.oproSelectedCSS);
+				    taocan.totalCount.html(parseInt(taocan.totalCount.html())-1);
+				    var priceJian=parseFloat(taocan.totalPrice.html())-parseFloat(pro.find(taocan.priceSelector).html());
+				    if(priceJian.toString().indexOf('.')>=0) taocan.totalPrice.html(priceJian.toFixed(2)); else taocan.totalPrice.html(priceJian);  
+				    
+			    }else{								
+				    pro.addClass(taocan.oproSelectedCSS);
+				    taocan.totalCount.html(parseInt(taocan.totalCount.html())+1);
+                    var priceSum=parseFloat(taocan.totalPrice.html())+parseFloat(pro.find(taocan.priceSelector).html());				            
+		            if(priceSum.toString().indexOf('.') >= 0) taocan.totalPrice.html(priceSum.toFixed(2)); else taocan.totalPrice.html(priceSum);
+			    }
+	            
+            });
+            othis.find(".btn_addCart").bind('click',{taocan:otaocanItem},function(event){
+                var taocan=event.data.taocan;
+                var othis = $(this);
+                if (othis.attr('data-group-id'))
+                {
+                    var url = '/Public/InitCart.aspx?datatype=jsonp&groupid=' + othis.attr('data-group-id');
+                    $.ajax({
+                        url : url,
+                        dataType : 'jsonp',
+                        cache : false,
+                        success : function(data){
+                            location = '/Pages/Shopping/ShoppingCart.aspx';
+                        }
+                    });
+                }
+                else
+                {
+                    var selectedProductList = [];
+                    selectedProductList.push(productNo);
+                    taocan.othis.find(".vi_taocan_pro").each(function(){
+                        var othis = $(this);
+                        if(othis.hasClass(taocan.oproSelectedCSS))
+                        {                        
+                            var product_no = othis.attr('data-product-no');
+                            selectedProductList.push(product_no);
+                        }
+                    });
+
+                    var url = '/Public/InitCart.aspx?datatype=jsonp&product_no=' + selectedProductList.join(',') + '&num=1&delaydefend=&carttype=&_rd=' + Math.random();
+                    $.ajax({
+                        url : url,
+                        dataType : "jsonp",
+                        cache : false,
+                        success : function(data){
+                                location = '/Pages/Shopping/ShoppingCart.aspx';
+                        }		        
+                    });
+                }
+                return false;
+            });
+    	});
+    	
+    	
+        
+        $("#btnKnowledgeSearch").click(function(){
+            showKnowledgePager(1,true);
+        });
+        
+        //库存
+		var ostock=$("#Jstock");
+		ostock.hover(function(){$(this).addClass("stock_hover")},
+			function(){$(this).removeClass("stock_hover")}
+		);
+		var ostockTrigger=ostock.find(".stock_mt");
+		ostockTrigger.click(function(){
+				var othis=$(this);
+				var cssCurr="stock_curr";
+				var address=ostock.find("a");
+				var panel=ostock.find(".stock_mc");
+				
+				if(ostock.hasClass(cssCurr)){
+					panel.slideUp(200);
+					ostock.removeClass(cssCurr);
+					$('body').unbind("click."+cssCurr);
+				}else{
+					panel.hide();
+					ostock.addClass(cssCurr);
+					panel.slideDown(200);
+					$('body').bind("click",function(event){
+						if($(event.target).closest("#Jstock").length==0){
+							panel.hide();
+							ostock.removeClass(cssCurr);
+							$('body').unbind("click."+cssCurr);
+						}
+					})
+				}
+			});
+        
+        var Jinformation = new efeihu.Tab({eventType : 'click',triggers:".ui_tab_triggers_item",panels:'.ui_tab_item ',par:'#Jinformation',currClass:'ui_tab_triggers_curr'});
+        Jinformation.addEvent('afterSwitch', function(e,index){ 
+            var trigger = $(e.data.triggers[index]);
+            var panel = $(e.data.panels[index]);
+	        var dataType = trigger.attr('data-type');
+	        var fn = actions.informations[dataType];
+	        if (dataType && fn && !_cache[dataType])
+	        {
+	            var othis=$(e.data.panels[index]);
+	            $.ajax({
+	                url :  '/PublicAjax/ProductDetailService.aspx',
+	                cache : false,
+	                data : { action :  dataType,productNo : productNo},
+	                success : function(data){
+	                    fn(panel, data);
+	                }
+	            });
+	            _cache[dataType] = true;
+	        }
+    	    
+    	});
+              
+        
+        
+		
+        
+        var Jtime = new efeihu.Timer();
+        Jtime.getTimeData = function(seconds){
+	        return {hour:parseInt(seconds/3600),minute:parseInt(seconds/60%60),second:seconds%60};
+        };
+        Jtime.formatTime = function(num){
+	        return num < 10 ? "0" + num : num;
+        };
+        
+
+       function startTimer(id){
+            var JlimitTime = $(id),limitTime = Number(JlimitTime.attr('data-time')),JlimitTimeItem = JlimitTime.children('em');
+            var sSecondTimer,sSecondTime = 10;
+		    if(!isNaN(limitTime) && limitTime > 0 && JlimitTimeItem.length){
+			    Jtime.addEvent('onAction',function(){
+			        if(limitTime >= 0){
+				        updateTime(this.getTimeData(limitTime));
+				        limitTime -= 1;
+			        }
+			    });
+			    //模拟毫秒
+			    if(JlimitTimeItem.length > 3){
+			        sSecondTimer = setInterval(function(){
+			            sSecondTime = sSecondTime < 0 ? 9 : sSecondTime;
+				        JlimitTimeItem[3].innerHTML = sSecondTime;
+				        sSecondTime--;
+			        },100);
+			    }
+                var updateTime = function(time){
+			        var day = parseInt(time.hour/24);
+			        JlimitTimeItem[0].innerHTML = Jtime.formatTime(time.hour);
+			        JlimitTimeItem[1].innerHTML = Jtime.formatTime(time.minute);
+			        JlimitTimeItem[2].innerHTML = Jtime.formatTime(time.second);
+		        };
+            }
+       }
+       startTimer('#JlimitTime');
+       startTimer('#JgroupBuyTime');
+
+        
+        
+        	// 商品图放大镜	
+		var ojzoom=Jzoom.play({obj:"#JimgZoom",jzoomdivMax:800,bigIMGURL:"http://image.efeihu.com/images/pdtimage/img_middle/"});
+		
+		$("#JPreviewSmall .list li").mouseenter(function(){
+			var othis=$(this);
+			othis.closest(".content").find("li").removeClass("curr");
+			othis.addClass("curr");
+			var strsrc=othis.find("img").attr("src");
+			var start=strsrc.lastIndexOf("/")+1;
+			$("#JimgZoom").find("img").eq(0).attr("src",strsrc.replace('pdtimage/img_small','android'));
+		});
+		$("#JPreviewSmall .list li").eq(0).trigger('mouseenter');
+		
+		var obackTop=BackTop.play({obj:"#JbackTop"});
+		
+})();

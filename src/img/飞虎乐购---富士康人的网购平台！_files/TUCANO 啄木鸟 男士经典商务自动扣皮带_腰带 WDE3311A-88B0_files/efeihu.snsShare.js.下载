@@ -1,0 +1,223 @@
+﻿
+(function(){
+
+//作为模块挂入命名空间
+//var EFEIHU = window.EFEIHU || {},data,config;
+
+//作为标识的className
+var FINDCLASS = 'efeihu_snsShare';
+var checkUrl='http://www.efeihu.com/PublicAjax/Share.aspx?';
+
+//工具函数
+var addEvent = window.addEventListener ? 
+    function(el, type, fn, capture) {
+        if (el.addEventListener) {
+            el.addEventListener(type, fn, !!capture);
+        }
+    } :
+    function(el, type, fn) {
+        if (el.attachEvent) {
+            el.attachEvent('on' + type, fn);
+        }
+    };
+var removeEvent = window.removeEventListener ?
+    function(el, type, fn, capture) {
+        if (el.removeEventListener) {
+            el.removeEventListener(type, fn, !!capture);
+        }
+    } :
+    function(el, type, fn) {
+        if (el.detachEvent) {
+            el.detachEvent('on' + type, fn);
+        }
+    };
+var stopEvent = function(e){
+    if (e && e.stopPropagation){
+        e.stopPropagation();
+    }else{
+        e.cancelBubble = true;
+    }
+    
+    if (e && e.preventDefault){
+        e.preventDefault();
+    }else{
+        e.returnValue = false
+    }
+}
+
+
+//共用数据
+data = {
+    site:encodeURIComponent('http://www.efeihu.com/'),
+    url:encodeURIComponent(checkUrl),
+    title:encodeURI(document.title)
+};
+
+//各站点所需参数
+config = {
+    //腾讯微博
+    qq:{
+        _sendUrl:'http://v.t.qq.com/share/share.php',
+        params:{
+            url:data.url,
+            appkey:'fbbb6bdb5bdd4f52a0cc6892d34fb185',
+            site:data.site,
+            title:data.title
+        }
+    },
+    //新浪微博
+    sina:{
+        _sendUrl:'http://v.t.sina.com.cn/share/share.php',
+        params:{
+            url:data.url,
+            appkey:'2426748002',
+            title:data.title,
+            source:'bookmark',
+            pic:(function(){return '';})()
+        }
+    },
+    //人人网
+    renren:{
+        _sendUrl:'http://share.renren.com/share/buttonshare.do',
+        params:{
+            link:data.url,
+            appkey:'627f813d8f2f4c4b935d2510ffb96d99',
+            title:data.title
+        }
+    },
+    //开心网
+    kaixin:{
+        _sendUrl:'http://www.kaixin001.com/repaste/share.php',
+        params:{
+            rtitle:data.title,
+            rurl:data.url,
+            rcontent:(function(){return '';})()
+        }
+    }
+    
+};
+
+//点击事件
+function clickEvent(e){
+    var e = e || window.event,el = e.srcElement || e.target;
+    var dom = this,snsType = dom.getAttribute('data-shareType'),cfg,params = [],url;
+    
+    if(snsType === null){
+        return;
+    }
+    cfg = config[snsType];
+    if(!cfg){
+        return;
+    }
+    
+    //统一类型分享考虑使用缓存=======
+    var returnflag=true;
+    
+    //如果是a标签,修改href和target
+    //其他标签则window.open
+    if(dom.tagName.toLowerCase() === 'a'){
+        
+//        for(var p in cfg.params){
+//            if (p=='url'||p=='rurl'|| p =='link' )
+//            {
+//                params.push(p + '=' + cfg.params[p]+
+//                encodeURIComponent("&userid="+json.data.userid +"&src="+snsType+"&productno="+$(dom).parent().attr("pro"))
+//                );
+//            }
+//            else
+//            {
+//                params.push(p + '=' + cfg.params[p])
+//            };
+//        }
+//        url = cfg._sendUrl + '?' + params.join('&');
+//        dom.href = checkUrl +'action=checklogin&return_url=' + url
+//        dom.target = '_blank';
+        
+         $.ajax({ url: checkUrl+'action=checklogin', 
+            data: "",
+            dataType : 'json',
+            type : "GET",
+            cache : false,
+            async:false,
+            success: function(json){
+                if(json.is_success=="1"){
+                    var hrfs=location.href;
+                    if(hrfs.indexOf("?")=="-1")
+                    {
+                        hrfs=hrfs+"?pcid=";
+                    }
+                    for(var p in cfg.params){
+                        if (p=='url'||p=='rurl'|| p =='link' )
+                        {
+                            params.push(p + '=' + cfg.params[p]+
+                            encodeURIComponent('returnUrl='+encodeURIComponent(location.href)+"&userid="+json.data.userid +"&src="+snsType+"&productno="+$(dom).parent().attr("pro"))
+                            );
+                        }
+                        else
+                        {
+                            params.push(p + '=' + cfg.params[p])
+                        };
+                    }
+                    url = cfg._sendUrl + '?' + params.join('&');
+                
+                    dom.href = url;
+                    dom.target = '_blank';
+                }
+                else
+                {
+                    window.location.href=json.data.returnUrl;
+                    returnflag=false;
+                }
+             }
+        });
+       return returnflag; 
+    }else{
+        //未测试
+        window.open( url,'', 'width=700, height=680, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no' );
+        //stopEvent(e);
+    }
+}
+
+
+//获取需要添加分享事件的元素
+//默认获取a标签检测
+//无结果再检测所有标签
+var isLooped = false;
+function getEls(type){
+    if(isLooped){
+        return [];
+    }
+    var as = type === 'className' ? document.documentElement : document.getElementsByTagName('a'),arr = [],len = as.length,i = 0;
+    
+    for(;i<len;i++){
+        if((' ' + as[i].className + ' ').indexOf(' ' + FINDCLASS + ' ') != -1){
+            arr.push(as[i]);
+        }
+    }
+    if(type === 'className'){
+        isLooped = true;
+    }
+    if(arr.length < 1){
+        return getEls('className');
+    }
+    return arr;
+}
+
+
+addEvent(window,'load',function(){
+    var els = getEls(),elsLen = els.length,elsi = 0;
+    for(;elsi<elsLen;elsi++){
+        //addEvent(els[elsi],'click',clickEvent);
+        els[elsi].onclick = clickEvent;
+    }
+});
+
+
+
+
+
+})();
+
+
+
+

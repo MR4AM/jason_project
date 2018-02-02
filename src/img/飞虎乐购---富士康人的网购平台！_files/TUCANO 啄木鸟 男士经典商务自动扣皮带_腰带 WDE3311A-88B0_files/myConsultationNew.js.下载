@@ -1,0 +1,474 @@
+﻿/*
+ * 我要咨询js
+ * autor: xintong
+ * Date: 2012-05-02
+ * Revision:1.0
+ */
+ (function($){  
+    //点击我要咨询
+	$.fn.openMyConsultation=function(){
+		  //打开我要咨询页面	      
+		  if(""==$('#minWinMyConsultation').html()||null==$('#minWinMyConsultation').html()){
+			   //当不存在咨询窗口的时候弹出咨询窗口
+			   $.ajax({
+						url: "/dialog/ConsultationForm.html",
+						cache: false,
+						success: function(html){
+						// var myConsultationDiv= $('div').find("#minWinMyConsultation");//从div开始查找id为minWinConsultation元素
+						 //$('div').detach('#minWinMyConsultation');		      
+							$('body').append(html);
+							setWinConsultation();  //窗口设置 				
+							//点击提交咨询按钮	                            
+							$(".submitConsultationNoneCss").click(function(){ 	
+							    var oThis = $(this);
+							     oThis.prop('disabled',true);
+								 var content=$('#JtextareaConsultation').val();		
+									if(content!='请您填写咨询问题。'){	
+										//var convertContent= content.replace(/[^\x00-\xff]/g, "**"); //将汉字转换为**，进行验证输入的字数
+										if((content.length>3)&&(content.length<301)){//最少输入4个字，最多输入300个字
+												//提交咨询至后台   	                            
+												$.ajax({
+														 url: "/PublicAjax/consultation/ProductConsultation.ashx?funTo=1",
+														 cache: false,
+														 data:{
+														 pidno:window.itemInfo.productNo,
+														 content: escape($('#JtextareaConsultation').val()),
+														 conType:$("input[name='consultationRadio']:checked").val()											 
+														 },
+														 dataType: "text",
+														 success: function(json){
+														 var data = eval('(' + json + ')');                                                                 
+																if(data.result==true){
+																    var content = '<div class="content"><p class="title">您的咨询已经成功提交！</p><p class="des">我们会尽快予以回复并显示，感谢您的参与！</p></div><div class="m_minWin_bdfd">本窗口将在2秒后自动关闭</div>';
+																    showDialog({id : 'minWinConsultationPressNameSucc',currClass : 'ms_minWin_Succ',content : content, title : '我要咨询'});
+																	
+																	setTimeout(function(){
+																	    hideDialog({id : 'minWinConsultationPressNameSucc'});
+																	    $("#minWinMyConsultation").hide();
+																	    setDefaultValue();
+																	},2300);
+																	
+																}else{//插入数据库失败
+							                                         oThis.prop('disabled',true);
+																     if(data.result=="dataerror"){
+																        alert("您输入了特殊字符,请检查您的输入！");
+																     }else{
+																        alert("发表咨询失败！");
+																     }																	 																  
+																}                                             
+														}
+												}); 
+										}
+										else
+										{
+										    oThis.removeAttr('disabled');
+										}
+									}		
+									else
+									{
+									    oThis.removeAttr('disabled');
+									} 
+							}); 
+																				   
+						}
+				}); 
+			}else{			
+				setWinConsultation();  //窗口设置
+			}
+    }	 
+ })(jQuery);
+ 
+ //设置弹出的咨询框显示状态
+function setWinConsultation(){
+ 	var ominWin=$("#minWinMyConsultation");
+	ominWin.show()
+	if($.browser.msie && Number($.browser.version) <= 6){
+		var doch=$(document).height();
+		ominWin.height(doch);
+		ominWinH2=parseInt(ominWin.children(".m_minWin").height()/2);
+		var owin=$(window);
+		var owinh2=parseInt(owin.height()/2);
+		ominWin.children(".m_minWin").css({"top":owin.scrollTop()+owinh2-ominWinH2});
+		owin.bind("scroll",function(){
+				var top=owin.scrollTop()+owinh2-ominWinH2;
+				ominWin.children(".m_minWin").css({"top":top});
+		});
+	}else{
+		var winH2=parseInt($(window).height()/2);
+		var minWin=ominWin.children(".m_minWin").eq(0);
+		var thisH2=parseInt(minWin.height()/2);
+		minWin.css({"top":winH2-thisH2});
+	}			           
+	$(".submitConsultationNoneCss").removeAttr('disabled');
+	ominWin.find(".ui_minWin_close").bind("click",function(){
+			ominWin.hide();
+			setDefaultValue();	
+			//$(this).unbind(event);			
+	});
+	ominWin.find(".btnClose").bind("click",function(){
+			ominWin.hide();
+			setDefaultValue();
+		  //  $(this).unbind(event);			
+	});		  
+ }
+ var consultationTextTpl = '<p class="vi_consult_access">\
+                        	<a href="/Pages/ProductShow/AllConsultation.aspx?pidno=<#=productNo#>" target="_blank">查看全部<#=count#>条咨询</a>\
+                        	<a href="javascript:;" class="pressTxt">我要咨询</a>\
+        </p>';
+ var consultationPageTpl = '<div class="ui_page"><div class="ui_pagewrap"><#=pages#></div></div>';
+ 
+ //设置弹出框的默认值
+ function setDefaultValue(){
+      $("#JtextareaConsultation,#JtextareaTipsConsultation").val("请您填写咨询问题。").css("color","#ccc");
+	  $("input[name='consultationRadio']").get(0).checked = true;	
+	  //  $("#JtextareaTipsConsultation em").text(300);
+	   $("#JtextareaTipsConsultation").html("还可以输入<em>300</em>字，最少输入4个"); 
+ }
+ 
+ //加载咨询列表，type:类型 0：全部;1.咨询商品;2.库存与配送;3.支付问题;4.发票与保修.pageSize:页面数据大小；pageObject：分页对象
+ function pdtConsulationList(type, pageSize,panel,pageIndexFirst){
+    var productNo = window.itemInfo.productNo;
+    var pageIndex = pageIndex || 1;
+    var panel = $(panel);
+   
+    var PageBound = function(pages, page, count) {
+        page=Number(page);
+        pages=Number(pages);
+        count=Number(count);
+        var me = this, NUM = 3, HF = 1, i, arr = [], pres = page - HF, nexts =page + HF, min = 1, max = pages, pre, next;
+        pre = page - 1 < 1 ? 1 : page - 1;
+        next = page + 1 > pages ? pages : page + 1;
+        if (pages < NUM) {
+            for (i = 1; i <= pages; i++) {
+                arr.push(i);
+            }
+            return {
+                min: min, max: max, pres: pres, nexts: nexts, pages: pages, page: page, loops: arr, count: count, pre: pre, next: next
+            };
+        }
+        
+
+        if (pres <= 0) {
+            pres = 1;
+        }
+        nexts = nexts > pages ? pages : nexts;
+       
+        for (i = pres; i <= nexts; i++) {
+            arr.push(i);
+        }
+
+        return {
+            min: min, max: max, pres: pres, nexts: nexts, pages: pages, page: page, loops: arr, count: count, pre: pre, next: next, first: 1, last: pages
+        };
+    };
+	    
+    function getPage(pageCount,pageIndex,recordCount){
+        var pageBound = new PageBound(pageCount, pageIndex, recordCount);
+        var _pageArr = [];
+        for (j = 0, loopLen = pageBound.loops.length; j < loopLen; j++) {
+            var _j = pageBound.loops[j];
+            currPageStr = pageBound.page == _j ? ' class="curr" ' : '';
+            eventStr = ' page="' + _j + '" ';
+            _pageArr.push('<a href="javascript:;"' + currPageStr + eventStr + '>' + _j + '</a>');
+        }
+        _pageArr = _pageArr.join('');
+        if (typeof pageBound.first != 'undefined' && pageBound.loops[0] != 1) {
+            _pageArr = '<a href="javascript:;" page="' + pageBound.first + '">' + pageBound.first + '</a>' + '<a href="javascript:;" page="' + pageBound.pres + '">...</a>' + _pageArr;
+        }
+        if (typeof pageBound.last != 'undefined' && pageBound.loops[loopLen - 1] != pageBound.last) {
+            _pageArr = _pageArr + '<a href="javascript:;" page="' + pageBound.nexts + '">...</a>' + '<a href="javascript:;" page="' + pageBound.last + '">' + pageBound.last + '</a>';
+        }
+        var preClass=pageIndex==1?' class="pre dis"':' class="next"';
+        var nexClass=pageIndex==pageCount?' class="pre dis"':'class="next"';
+        _pageArr='<a '+preClass+' href="javascript:;" page="pre">上一页</a>'+_pageArr;
+        _pageArr+='<a '+nexClass+' href="javascript:;" page="next">下一页</a>';   
+        _pageArr += '<span class="num">共<em class="total" totalnum='+pageCount+'>'+pageCount+'</em>页</span><span class="change">\
+                                                ，到第\
+                                                <input type="text" class="txt">页\
+                                                <input type="button" class="btn" value="确定">\
+                                            </span>';
+                                      
+        return _pageArr;
+    };
+	    
+    function pageNum(othis,page)
+    {
+        var indexNum=Number(page);
+        var cuurNum=Number(othis.parent().find(".curr").attr('page'));
+        var totalNum=Number(othis.parent().parent().find(".num .total").attr('totalnum'));
+
+        if (page=='pre')
+        {
+            if(cuurNum==1) {
+                alert('已经是第一页');
+                return false;
+            }
+            else{
+                indexNum= cuurNum-1;
+            }
+        }
+        if(page=="next")
+        {
+            if(cuurNum==totalNum){
+                alert('已经是最后一页');
+                return false;
+            }
+            else{ 
+                indexNum=cuurNum+1;
+            }
+        }
+        if(indexNum<1 || indexNum>totalNum)
+        {
+            alert('页码超出范围');
+            return false;
+        }
+        return indexNum;  
+
+    }
+	    
+	showConsultation(pageIndex);
+   
+    function showConsultation(pageIndex)
+    {
+        $.ajax({
+        url : '/PublicAjax/Consultation/ProductConsultation.ashx?funTo=2&random='+Math.random(),
+        dataType : "text",
+        data : {'pidno':productNo,'conType':type,pageSize:5,pageIndex:pageIndex},
+        success : function(json){
+        var data = eval('(' + json + ')');
+        var htmlTemplate = '';
+        if(data.count>0){
+            htmlTemplate += '<div class="ui_consultationList" >';
+            $.each(data.data, function(i, n){	
+	                 if(i==data.count-1){
+		                htmlTemplate += '<div class="consultationBox m_last">';  
+	                }else{
+		                htmlTemplate += '<div class="consultationBox">';
+	                }
+	                htmlTemplate += ' <div class="title">';
+	                htmlTemplate += '<div class="tLeft">';
+	                htmlTemplate += '<strong>['+n.CODENAME+']</strong>';
+	                //htmlTemplate += '<strong>[咨询商品]</strong>';								
+	                //htmlTemplate += '<span>'+n.PRODUCTNAME+'</span>';  
+	                htmlTemplate += '<span>'+n.NICKNAME+'</span>';
+	                htmlTemplate += '</div>';
+	                htmlTemplate += '<div class="time">'+n.CONSULTATIONTIME+'</div>';
+	                htmlTemplate += '</div>';
+	                htmlTemplate += '<div class="content">'+n.CONSULTATIONCONTENT+'</div>';
+	                htmlTemplate += ' <div class="title">';
+	                htmlTemplate += '<div class="tLeft">';
+	                htmlTemplate += '<b>' + (window.itemInfo.isMerchant ? '掌柜回复' : '飞虎乐购') + '</b>';
+	                htmlTemplate += '</div>';
+	                htmlTemplate += '<div class="time">'+n.REPLIESTIME+'</div>';
+	                htmlTemplate += '</div>';
+	                htmlTemplate += '<div class="reply">'+'回复:'+n.REPLIESCONTENT+'</div>';   
+	                htmlTemplate += '</div>';  
+            });
+            htmlTemplate += '</div>';  
+            
+            
+        }
+        else{
+            htmlTemplate += '<br /><div  text-align:center">还没有相关咨询！</div>';
+        }
+        htmlTemplate += unescape(jsTpl(consultationTextTpl, {count : data.count , productNo : productNo}, true));
+        panel.html(htmlTemplate);
+
+
+        //点击我要咨询按钮
+        $(".pressTxt",panel).CheckNickName(function(obj){ //进行登录以及昵称判断 
+             $(obj).openMyConsultation(function(){ //弹出咨询框   
+            }) 
+            return false;
+        });
+        if (data.count>0)
+        {
+            var pageCount = Math.ceil(data.count / pageSize);
+            var pageContent = getPage(pageCount,pageIndex,data.count);
+            
+            panel.append(unescape(jsTpl(consultationPageTpl,{pages : pageContent  },true)));
+        }
+        var othisClick=$(panel).find(".ui_page");
+        othisClick.unbind("click"); 
+        othisClick.click(function(e){ 
+            var othis = $(e.target);
+            var page = othis.attr('page');
+            var indexNum=pageNum(othis,page);
+            if(indexNum)
+            {
+                showConsultation(indexNum);  
+            }
+        }); 
+        var othisBtnClick=$(panel).find(".ui_page").find(".btn");
+        othisBtnClick.unbind("click"); 
+        othisBtnClick.click(function(){
+                var othis = $(this);
+                var page = othis.prev(".txt").val();
+                var indexNum=pageNum(othis,page);
+            if(indexNum)
+            {
+                showConsultation(indexNum);  
+            } 
+         });
+        }	 
+    });
+  }
+}
+
+function SendEmailPage()
+{
+    //提交按钮事件
+    var val1=$('input:radio[name="radio"]:checked').val(); 
+    var val2=$('input:radio[name="radioPro"]:checked').val();           
+    //var orderCount=$("#ReaOrderCount").val();
+    if(val1==1 && val2==null){
+            alert("请选择相关订单商品！");
+            return false;
+    }              
+    var DetailPro=$.trim($("#DetailPro").val());
+    if(DetailPro=="" || DetailPro=="请详细描述，字数在5-200字以内"){
+        alert("请填写问题详细描述！");
+        return false;
+    }else if(DetailPro.length<5 || DetailPro.length>200){
+        alert("问题详细描述字数需在5-200字以内！");
+        return false;
+    }
+    
+    
+    $("#helps").css("display","");
+    $("#helps").css("overflow-x","hidden");
+    $("#helps").css("width",$(document.body)[0].clientWidth+"px");
+    $("#helps").css("height",$(document.body)[0].clientHeight+"px");
+    $('#helps').css("display","block");
+	$("#minWinMyConsultation").css("display","");
+	$("#minWinMyConsultation").css("width",$(document.body)[0].clientWidth+"px");
+	$("#minWinMyConsultation").css("height",$(document.body)[0].clientHeight+"px");
+	$("#ui_minWin1").css("display","block");
+	$("#ui_minWin1").css("top","300px");
+	$("#ui_minWin1").css("left",$(document.body).clientWidth/2-440+"px");
+	
+	$('#minWinMyConsultation').css("display","block");
+	return false;
+	 
+}
+
+function SendEmail()
+{    
+     var emailValidate=$("#bdEmail").validate();//验证邮箱是否通过
+     if(!emailValidate){                 
+        return false;
+     }
+    $("#bdEmail").attr("class","bd bdimg");
+    
+    //发送邮件做插入数据操作  
+    submitInsert();
+         
+	$("#minWinMyConsultation").css("display","none");
+	$(".ui_minWin1").css("display","none");
+	
+	$("#minWinMyConsultation2").css("display","");
+	$("#minWinMyConsultation2").css("width",$(document.body)[0].clientWidth+"px");
+	$("#minWinMyConsultation2").css("height",$(document.body)[0].clientHeight+"px");
+	$("#ui_minWin2").css("display","block");
+	$("#ui_minWin2").css("top","300px");
+	$("#ui_minWin2").css("left",$(document.body).clientWidth/2-440+"px");
+	
+	$("#minWinMyConsultation2").css("display","block");
+	//$(".ui_minWin2").hide(3000,function(){$("#minWinMyConsultation2").css("display","none");});
+	$('#minWinMyConsultation2').delay(2000).hide(0);
+	$('#helps').delay(2000).hide(0);
+	return false;
+
+}
+
+function submitInsert(){
+        var commentContent=$("#DetailPro").val();//huo qu yijian       
+        var email=$("#bdEmail").val();           //email
+        var sorder_no=$('input:radio[name="radioPro"]:checked').val();
+        var product_no=$('input:radio[name="radioPro"]:checked').attr("productNo");
+        var questionId=$("#ordersel").find("option:selected").val();
+                                         
+        $.post("/PublicAjax/AddActiveUserControl/HelpActive.aspx?action=CustomerEmail&email="+email  + "&Sorder_No=" + sorder_no +"&Product_no="+ product_no +"&Questionid="+questionId,
+                {comments : escape(commentContent)},function(data){                      
+              data = eval("(" + data + ")"); 
+              if (data.isValid)
+              {                                                   
+                    $("#DetailPro").val("");
+              }
+              
+         });   
+}
+
+
+$(window).load(function() {
+	$(document).ready(function() {
+		$(".CSE_input2").bind('click',function(){		
+			if($('.CSE_input3').val()=="" ||$('.CSE_input3').val()=="请输入商品名称或订单编号")
+			{		
+				$('.CSE_input2').jCallout({
+					message: "请输入查询<br>关键词！",
+					borderColor: '#F87601',
+					backgroundColor: "white",
+					textColor: "#666666"
+				});							
+				return false;
+			}
+		});
+		$(".CSE_input3").bind('click',function(){
+			$('.CSE_input3').jCallout('hide');
+		});
+	});
+
+function reviewCommTextArea(obj,maxnum,minnum,objTip){	   
+	            var newvalue = obj.val(); 	      	                   
+	            var minnum0 = minnum;
+	            var maxnum0 = maxnum;	 	                 	            
+	            if(newvalue.length>0){
+		            if (newvalue.length > maxnum) {
+				            var len=parseInt(newvalue.length - maxnum);
+				            objTip.innerHTML="<em class='m_form_errhint'>已超出" +len+"个字</em>";
+		            }else if(newvalue.length < minnum){
+			                objTip.innerHTML=" <em class='m_form_errhint'>最少输入" +minnum0+"个字</em>";
+		            }else{		     
+		                if(newvalue=="请详细描述，字数在5-200字以内") return false;
+			            var len=parseInt(maxnum-newvalue.length);
+			            objTip.innerHTML="还可以输入<em>" +len+ "</em>个字";
+			            objTip.style.color="#999";
+			            //obj.style.borderColor="#ccc"
+		            }
+	            }else{
+		            objTip.innerHTML="还可以输入<em>" +maxnum+ "</em>个字";
+		            objTip.style.color="#999";
+		            //obj.style.borderColor="#ccc"
+	            }
+            }
+
+    var timeout;
+	$("#DetailPro").focus(function(){
+		if($(this).val()=='请详细描述，字数在5-200字以内')
+		{
+			$(this).val('');
+		}			
+		timeout=setInterval(function(){reviewCommTextArea($("#DetailPro"),200,5,document.getElementById("JtextareaTips"));},100);
+		
+	});
+	$("#DetailPro").blur(function(){
+		if($(this).val()=='')
+		{
+			$(this).val('请详细描述，字数在5-200字以内')
+		}
+	});
+	$("#ctl00_ContentPlaceHolder1_SearchProduct").focus(function(){
+		if($(this).val()=='请输入商品名称或订单编号')
+		{
+			$(this).val('');
+		}
+	});
+	$("#ctl00_ContentPlaceHolder1_SearchProduct").blur(function(){
+		if($(this).val()=='')
+		{
+			$(this).val('请输入商品名称或订单编号')
+		}
+		
+	});
+});
