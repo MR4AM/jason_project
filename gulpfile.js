@@ -31,7 +31,7 @@ gulp.task('server',function(){
         proxy:'http://localhost:2121',
 
         // 监听文件修改
-        files:['./src/**/*.html','./src/css/*.css','./src/api/*.php','./src/js/*.js','src/*.html']
+        files:['./src/**/*.html','./src/css/*.css','./src/api/*.php','./src/js/*.js','src/*.html','./src/api/*.json']
     });
 
     // 监听sass修改
