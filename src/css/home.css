@@ -1,3 +1,544 @@
-h1 {
-  color: #666;
+header {
+  background-color: #fff;
+}
+
+header .container {
+  min-width: 1080px;
+}
+
+header #header_top {
+  background-color: #EBEBEB;
+  border-bottom: 1px solid #ccc;
+}
+
+header #header_top li {
+  float: left;
+  height: 28px;
+  line-height: 28px;
+  padding-right: 8px;
+}
+
+header #header_top .ht_left li:nth-child(2) a, header #header_top .ht_left li:nth-child(4) a {
+  color: #0066FF;
+}
+
+header #header_top .ht_right li:nth-child(2) {
+  padding: 0 15px;
+}
+
+header #header_main .logo {
+  display: inline-block;
+}
+
+header #header_main .logo a {
+  display: block;
+  height: 95px;
+  width: 300px;
+  background: url("../img/fhlg.fw.png") 0 -70px;
+}
+
+header #header_main .search {
+  position: relative;
+  height: 100px;
+  line-height: 100px;
+  margin-left: 335px;
+  font-size: 0;
+}
+
+header #header_main .search #insert {
+  height: 30px;
+  width: 350px;
+  border: 1px solid #FFC400;
+  padding: 5px;
+  font-size: 16px;
+}
+
+header #header_main .search .res {
+  position: absolute;
+  top: 66%;
+  z-index: 1000;
+  border: 1px solid #ccc;
+  display: none;
+}
+
+header #header_main .search .res ul {
+  background-color: #fff;
+  width: 350px;
+  height: 350px;
+}
+
+header #header_main .search .res ul li {
+  font-size: 16px;
+  margin-left: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+header #header_main .search #lookfor {
+  height: 30px;
+  width: 82px;
+  background-color: #FFC400;
+  cursor: pointer;
+}
+
+nav {
+  width: 100%;
+  background-color: #FFC400;
+}
+
+nav .container {
+  position: relative;
+}
+
+nav #nav_top .nav_top_l {
+  font-size: 18px;
+  color: #000;
+  width: 800px;
+}
+
+nav #nav_top .nav_top_l h1 {
+  height: 42px;
+  line-height: 42px;
+  width: 186px;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+}
+
+nav #nav_top .nav_top_l ul li {
+  float: left;
+}
+
+nav #nav_top .nav_top_l ul li a {
+  display: block;
+  height: 42px;
+  line-height: 42px;
+  padding: 0 16px;
+  color: #000;
+}
+
+nav #nav_top .nav_top_l ul li a:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+nav #nav_top .nav_top_r {
+  margin-top: 9px;
+}
+
+nav #nav_top .nav_top_r a {
+  position: relative;
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  background-color: #fff;
+  padding: 0 10px;
+  border-radius: 5px 0 0 5px;
+  color: #000;
+}
+
+nav #nav_top .nav_top_r a span {
+  margin-left: 30px;
+}
+
+nav #nav_top .nav_top_r a i {
+  position: absolute;
+  display: block;
+  width: 20px;
+  height: 20px;
+  background: url("../img/fhlg.fw.png") 0 0;
+}
+
+nav #nav_top .nav_top_r button {
+  margin-left: -3px;
+  border-radius: 0 5px 5px 0;
+}
+
+nav #nav_top .nav_top_r button a {
+  background-color: #FFDE00;
+  color: #000;
+}
+
+nav #nav_top .nav_top_r button a:hover {
+  color: #fff;
+}
+
+nav #nav_left {
+  z-index: 100;
+  position: absolute;
+  left: 0;
+  width: 186px;
+  background-color: #F6F6F6;
+}
+
+nav #nav_left li {
+  position: relative;
+  padding-top: 5px;
+}
+
+nav #nav_left li a {
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  color: #000;
+  text-align: center;
+}
+
+nav #nav_left li a:hover {
+  background-color: #FFF;
+  color: #FFC400;
+}
+
+nav #nav_left li i {
+  position: absolute;
+  left: 15%;
+  display: block;
+  width: 30px;
+  height: 25px;
+  background: url("../img/fhlg.fw.png") -280px 0;
+}
+
+#banner {
+  overflow: hidden;
+  width: 100%;
+}
+
+#banner .container {
+  position: relative;
+}
+
+#banner #auto {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 1920px;
+  height: 480px;
+  border: 0;
+}
+
+#banner #auto .prev {
+  left: 31%;
+  background: url("../img/fhlg.fw.png") #000;
+  background-position: -60px -385px;
+}
+
+#banner #auto .next {
+  right: 30%;
+  background: url("../img/fhlg.fw.png") #000;
+  background-position: -138px -385px;
+}
+
+#banner .banner_mes {
+  width: 227px;
+  height: 480px;
+  background-color: #fff;
+  position: absolute;
+  right: -6%;
+  top: 0;
+}
+
+#banner .banner_mes a {
+  display: block;
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #ccc;
+  font-size: 16px;
+  text-align: center;
+  color: #000;
+}
+
+#banner .banner_mes a i {
+  position: absolute;
+  left: 30%;
+  top: 20%;
+  display: block;
+  width: 22px;
+  height: 20px;
+  background: url("../img/fhlg.fw.png") -50px 0;
+}
+
+#banner .banner_mes .mes_list a {
+  font-size: 12px;
+  border: none;
+  text-align: left;
+  height: 30px;
+  line-height: 30px;
+}
+
+#banner .banner_mes .mes_list a:hover {
+  color: #f00;
+}
+
+main {
+  background-color: #fff;
+  margin-top: 25px;
+}
+
+main .productlist_one .lefttime {
+  width: 190px;
+  height: 270px;
+  background-color: #FE0000;
+}
+
+main .productlist_one .lefttime h1 {
+  padding-top: 40px;
+  font-size: 32px;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+  color: #fff;
+}
+
+main .productlist_one .lefttime img {
+  background: url("../img/fhlg.fw.png") 0 -200px;
+  height: 33px;
+  width: 130px;
+  margin: 50px 20px;
+  border: 0;
+}
+
+main .productlist_one .counttime {
+  padding-left: 20px;
+}
+
+main .productlist_one .counttime h3 {
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+main .productlist_one .counttime .hour, main .productlist_one .counttime .min, main .productlist_one .counttime .second {
+  display: inline-block;
+  height: 42px;
+  line-height: 42px;
+  width: 42px;
+  border-radius: 5px;
+  background-color: #000;
+  color: #fff;
+  font-size: 24px;
+  text-align: center;
+}
+
+main .productlist_one .pro_one_detail ul {
+  text-align: center;
+  margin-left: 10px;
+}
+
+main .productlist_one .pro_one_detail ul h1 {
+  padding-top: 10px;
+  font-size: 14px;
+  color: #000;
+  font-weight: bold;
+}
+
+main .productlist_one .pro_one_detail ul li {
+  float: left;
+  margin-right: 3px;
+}
+
+main .productlist_one .pro_one_detail ul img {
+  width: 150px;
+  height: 190px;
+  cursor: pointer;
+}
+
+main .productlist_one .pro_one_detail ul span {
+  margin-top: 10px;
+  padding-left: 5px;
+  display: inline-block;
+  background-color: #f00;
+  color: #fff;
+  height: 30px;
+  line-height: 30px;
+  width: 117px;
+  font-size: 18px;
+  text-align: left;
+}
+
+main .productlist_one .pro_one_detail ul span del {
+  font-size: 12px;
+  padding-left: 10px;
+}
+
+main .productlist_one .pro_one_detail ul .catchbuy {
+  border: 1px solid #f00;
+  height: 30px;
+  line-height: 30px;
+  display: inline-block;
+  color: #f00;
+}
+
+main .topic {
+  border-bottom: 2px solid #000;
+  margin-top: 25px;
+}
+
+main .topic h1 {
+  display: line-block;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  position: relative;
+  margin-left: 30px;
+  height: 34px;
+  line-height: 34px;
+  width: 100px;
+}
+
+main .topic h1 i {
+  display: block;
+  width: 30px;
+  height: 34px;
+  background: url("../img/fhlg.fw.png");
+  position: absolute;
+  left: -30px;
+}
+
+main .topic ul li {
+  float: left;
+}
+
+main .topic ul li a {
+  font-size: 14px;
+  height: 34px;
+  line-height: 34px;
+  color: #000;
+  padding-right: 25px;
+}
+
+main .topic ul li a:hover {
+  color: #f00;
+}
+
+main .pro_base div {
+  overflow: hidden;
+}
+
+main .pro_base img:hover {
+  transform: scale(1.1, 1.1);
+  opacity: 0.8;
+}
+
+main .pro_base .base_left {
+  width: 600px;
+}
+
+main .pro_base .base_right {
+  text-align: center;
+}
+
+main .pro_base .base_right a {
+  display: inline-block;
+  padding: 10px 0 0 5px;
+  overflow: hidden;
+}
+
+main .pro_base .base_right li {
+  float: left;
+}
+
+main .pro_base .base_right li img {
+  width: 150px;
+  height: 150px;
+}
+
+main .pro_base .base_right li h2 {
+  padding-top: 5px;
+  font-size: 12px;
+  height: 24px;
+  line-height: 24px;
+  color: #000;
+  width: 150px;
+  overflow: hidden;
+}
+
+main .pro_base .base_right li:hover {
+  color: #FFC400;
+}
+
+main .pro_base .base_right li span {
+  font-size: 16px;
+  font-weight: bold;
+  color: #f00;
+}
+
+footer {
+  margin-top: 20px;
+  padding-top: 60px;
+  background-color: #fff;
+}
+
+footer .footer_top_l {
+  height: 154px;
+  padding-left: 50px;
+  width: 273px;
+  border-right: 1px solid #ccc;
+}
+
+footer .footer_top_l p {
+  padding-top: 15px;
+}
+
+footer .footer_top_l p strong {
+  font-size: 16px;
+}
+
+footer .footer_top_l p span {
+  color: #f00;
+}
+
+footer .footer_top_r .ft1 {
+  height: 154px;
+  width: 150px;
+  border-right: 1px solid #ccc;
+  text-align: left;
+  padding: 0 20px;
+}
+
+footer .footer_top_r .ft1 dt {
+  color: #000;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+footer .footer_top_r .ft1 dd {
+  padding-top: 5px;
+}
+
+footer .footer_top_r .ft1 a {
+  color: #bbb;
+}
+
+footer .footer_top_r .ft1 a:hover {
+  color: skyblue;
+}
+
+footer .ft1:last-child {
+  border: 0;
+}
+
+footer .footer_bottom {
+  position: relative;
+  padding: 20px 0 0 370px;
+}
+
+footer .footer_bottom ul li {
+  float: left;
+}
+
+footer .footer_bottom ul li a {
+  padding: 0 10px;
+  color: #000;
+}
+
+footer .footer_bottom i {
+  position: absolute;
+  left: 30%;
+  display: inline-block;
+  width: 40px;
+  height: 60px;
+  background: url("../img/fhlg.fw.png") -450px -100px;
 }

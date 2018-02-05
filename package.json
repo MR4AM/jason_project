@@ -27,7 +27,8 @@
   "keywords": [
     "git",
     "node.js",
-    "jquery"
+    "jquery",
+    "require.js"
   ],
   "author": "jasonlee",
   "license": "MIT",

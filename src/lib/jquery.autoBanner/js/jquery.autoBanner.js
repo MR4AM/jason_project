@@ -194,9 +194,9 @@
             // 前后按钮函数
             function pre_next(){
                 // 向前按钮
-                var $pre=$('<img/>').attr('src',opt.btnImg[0]).addClass('prev').appendTo($this);
+                var $pre=$('<img/>').addClass('prev').appendTo($this);
                 // 向后按钮
-                var $next=$('<img/>').attr('src',opt.btnImg[1]).addClass('next').appendTo($this);
+                var $next=$('<img/>').addClass('next').appendTo($this);
                 $this.on('click','.prev',function(){
                         if(opt.index<1){
                           if(opt.marquee){

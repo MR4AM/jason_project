@@ -6,5 +6,5 @@
 .jasoncarousel .page{position: absolute;right:43%;bottom:15px;}
 .jasoncarousel .page span{display:inline-block;margin:0 5px;width:15px;height:15px;line-height:30px;text-align:center;background-color:#ccc;border-radius:50%;z-index: 3;cursor: pointer;}
 .jasoncarousel .page span.active{background-color:#f60;color:#fff;}
-.jasoncarousel .prev{width: 32px;height: 60px;position:absolute;left:0;top:50%;transform: translate(0,-50%);opacity:0.6;cursor: pointer;}
-.jasoncarousel .next{width: 32px;height: 60px;position:absolute;right:0;top:50%;transform: translate(0,-50%);opacity:0.5;cursor: pointer;}
+.jasoncarousel .prev{width: 40px;height: 60px;position:absolute;left:0;top:50%;transform: translate(0,-50%);opacity:0.6;cursor: pointer;}
+.jasoncarousel .next{width: 40px;height: 60px;position:absolute;right:0;top:50%;transform: translate(0,-50%);opacity:0.5;cursor: pointer;}

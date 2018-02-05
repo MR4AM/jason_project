@@ -1,0 +1,326 @@
+{
+    "prodata": [{
+        "id": 0001,
+        "name": "phone",
+        "prodata": [{
+            "id": 1001,
+            "name": " 华为 HUAWEI P10",
+            "price":"¥3150",
+            "imgurl":"../img/phone/1001.jpg"
+        },
+        {
+            "id": 1002,
+            "name": " 华为（Huawei畅享7Plus",
+            "price":"¥1699",
+            "imgurl":"../img/phone/1002.jpg"
+        },
+        {
+            "id": 1003,
+            "name": " 佳能（Canon）IXUS 285 HS",
+            "price":"¥1199",
+            "imgurl":"../img/phone/1003.jpg"
+        },
+         {
+            "id": 1004,
+            "name": "山业SANWA   MA-ERGC1",
+            "price":"¥149",
+            "imgurl":"../img/phone/1004.jpg"
+        },
+         {
+            "id": 1005,
+            "name": " 维肯VK5移动电源",
+            "price":"¥78",
+            "imgurl":"../img/phone/1005.jpg"
+        },
+         {
+            "id": 1006,
+            "name": " BIRD/波导 A510 ",
+            "price":"¥99",
+            "imgurl":"../img/phone/1006.jpg"
+        }
+        ]
+     },
+     {
+        "id": 0002,
+        "name": "clothes",
+        "prodata": [{
+            "id": 1001,
+            "name": "百依恋歌 拉链中长款加厚棉衣",
+            "price":"¥189",
+            "imgurl":"../img/clothes/1001.jpg"
+        },
+        {
+            "id": 1002,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/clothes/1002.jpg"
+        },
+         {
+            "id": 1003,
+            "name": "浪莎 男士内衣纯色莫代尔薄款圆领秋衣秋裤套装",
+            "price":"¥78",
+            "imgurl":"../img/clothes/1003.jpg"
+        },
+         {
+            "id": 1004,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/clothes/1004.jpg"
+        },
+         {
+            "id": 1005,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/clothes/1005.jpg"
+        },
+         {
+            "id": 1006,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/clothes/1006.jpg"
+        }  
+    ]},
+    {
+        "id": 0003,
+        "name": "family",
+        "prodata": [{
+            "id": 1001,
+            "name": "百依恋歌 拉链中长款加厚棉衣",
+            "price":"¥189",
+            "imgurl":"../img/family/1001.jpg"
+        },
+        {
+            "id": 1002,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/family/1002.jpg"
+        },
+         {
+            "id": 1003,
+            "name": "浪莎 男士内衣纯色莫代尔薄款圆领秋衣秋裤套装",
+            "price":"¥78",
+            "imgurl":"../img/family/1003.jpg"
+        },
+         {
+            "id": 1004,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/family/1004.jpg"
+        },
+         {
+            "id": 1005,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/family/1005.jpg"
+        },
+         {
+            "id": 1006,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/family/1006.jpg"
+        }  
+    ]},
+     {
+        "id": 0004,
+        "name": "life",
+        "prodata": [{
+            "id": 1001,
+            "name": "百依恋歌 拉链中长款加厚棉衣",
+            "price":"¥189",
+            "imgurl":"../img/life/1001.jpg"
+        },
+        {
+            "id": 1002,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/life/1002.jpg"
+        },
+         {
+            "id": 1003,
+            "name": "浪莎 男士内衣纯色莫代尔薄款圆领秋衣秋裤套装",
+            "price":"¥78",
+            "imgurl":"../img/life/1003.jpg"
+        },
+         {
+            "id": 1004,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/life/1004.jpg"
+        },
+         {
+            "id": 1005,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/life/1005.jpg"
+        },
+         {
+            "id": 1006,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/life/1006.jpg"
+        }  
+    ]},
+     {
+        "id": 0005,
+        "name": "mom_child",
+        "prodata": [{
+            "id": 1001,
+            "name": "百依恋歌 拉链中长款加厚棉衣",
+            "price":"¥189",
+            "imgurl":"../img/mom_child/1001.jpg"
+        },
+        {
+            "id": 1002,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/mom_child/1002.jpg"
+        },
+         {
+            "id": 1003,
+            "name": "浪莎 男士内衣纯色莫代尔薄款圆领秋衣秋裤套装",
+            "price":"¥78",
+            "imgurl":"../img/mom_child/1003.jpg"
+        },
+         {
+            "id": 1004,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/mom_child/1004.jpg"
+        },
+         {
+            "id": 1005,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/mom_child/1005.jpg"
+        },
+         {
+            "id": 1006,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/mom_child/1006.jpg"
+        }  
+    ]},
+     {
+        "id": 0006,
+        "name": "sport_outside",
+        "prodata": [{
+            "id": 1001,
+            "name": "百依恋歌 拉链中长款加厚棉衣",
+            "price":"¥189",
+            "imgurl":"../img/sport_outside/1001.jpg"
+        },
+        {
+            "id": 1002,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/sport_outside/1002.jpg"
+        },
+         {
+            "id": 1003,
+            "name": "浪莎 男士内衣纯色莫代尔薄款圆领秋衣秋裤套装",
+            "price":"¥78",
+            "imgurl":"../img/sport_outside/1003.jpg"
+        },
+         {
+            "id": 1004,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/sport_outside/1004.jpg"
+        },
+         {
+            "id": 1005,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/sport_outside/1005.jpg"
+        },
+         {
+            "id": 1006,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/sport_outside/1006.jpg"
+        }  
+    ]},
+     {
+        "id": 0007,
+        "name": "makeup",
+        "prodata": [{
+            "id": 1001,
+            "name": "百依恋歌 拉链中长款加厚棉衣",
+            "price":"¥189",
+            "imgurl":"../img/makeup/1001.jpg"
+        },
+        {
+            "id": 1002,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/makeup/1002.jpg"
+        },
+         {
+            "id": 1003,
+            "name": "浪莎 男士内衣纯色莫代尔薄款圆领秋衣秋裤套装",
+            "price":"¥78",
+            "imgurl":"../img/makeup/1003.jpg"
+        },
+         {
+            "id": 1004,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/makeup/1004.jpg"
+        },
+         {
+            "id": 1005,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/makeup/1005.jpg"
+        },
+         {
+            "id": 1006,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/makeup/1006.jpg"
+        }  
+    ]},
+    {
+        "id": 0008,
+        "name": "heathy_food",
+        "prodata": [{
+            "id": 1001,
+            "name": "百依恋歌 拉链中长款加厚棉衣",
+            "price":"¥189",
+            "imgurl":"../img/heathy_food/1001.jpg"
+        },
+        {
+            "id": 1002,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/heathy_food/1002.jpg"
+        },
+         {
+            "id": 1003,
+            "name": "浪莎 男士内衣纯色莫代尔薄款圆领秋衣秋裤套装",
+            "price":"¥78",
+            "imgurl":"../img/heathy_food/1003.jpg"
+        },
+         {
+            "id": 1004,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/heathy_food/1004.jpg"
+        },
+         {
+            "id": 1005,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/heathy_food/1005.jpg"
+        },
+         {
+            "id": 1006,
+            "name": "百依恋歌中长款高腰百褶裙 ",
+            "price":"¥78",
+            "imgurl":"../img/heathy_food/1006.jpg"
+        }  
+    ]}
+
+
+    ]
+}

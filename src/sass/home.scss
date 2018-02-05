@@ -1,2 +1,116 @@
 @import 'var';
-h1{color:#666;}
+header{
+    .container{min-width: 1080px;}
+    background-color: #fff;
+    #header_top{
+    background-color: #EBEBEB;border-bottom:1px solid #ccc;
+    li{float:left; height: 28px;line-height: 28px;padding-right: 8px;}
+    .ht_left{
+        li:nth-child(2) a,li:nth-child(4) a{color:#0066FF;}
+        }
+    .ht_right li:nth-child(2){padding:0 15px;}
+    }
+
+    #header_main{
+        .logo {
+            display:inline-block;
+            a{display:block;height: 95px;width: 300px;background: url('../img/fhlg.fw.png')0 -70px; }
+        }
+        .search{
+            position:relative;
+            height: 100px;line-height: 100px;margin-left:335px;font-size: 0;
+            #insert{height: 30px;width: 350px;border:1px solid $mainColor;padding:5px;font-size: 16px;}
+            .res{position:absolute;top:66%;z-index:1000;border:1px solid #ccc;display:none;
+                ul{background-color:#fff;width:350px;height: 350px;li{font-size: 16px;margin-left:30px;
+                    height:30px;cursor:pointer;}}}
+            #lookfor{height: 30px;width: 82px;background-color:$mainColor;cursor:pointer;}
+        }
+    }
+} 
+nav{
+    width: 100%; background-color:$mainColor;
+    .container{position:relative;} 
+    #nav_top{
+        .nav_top_l{
+            font-size: 18px;color:#000;width: 800px;
+            h1{height: 42px;line-height: 42px;width: 186px;display:inline-block;text-align:center;cursor:pointer;}
+            ul{li{float:left;a{display:block;height: 42px;line-height: 42px;padding:0 16px;color:#000;}a:hover{background-color:#333;color:#fff;}}}
+        }
+        .nav_top_r{margin-top: 9px;
+            a{position:relative;display:inline-block;height: 24px;line-height: 24px;background-color: #fff;padding:0 10px;border-radius:5px 0 0 5px;color:#000;
+            span{margin-left: 30px;}
+            i{position:absolute;display:block;width: 20px;height: 20px;background:url('../img/fhlg.fw.png') 0 0; }}
+            button{margin-left: -3px;border-radius:0 5px 5px 0;a{background-color:#FFDE00;color:#000;}a:hover{color:#fff;}}
+        }
+    }
+    #nav_left{z-index:100;position:absolute;left:0;width: 186px;background-color: #F6F6F6;li{position:relative;padding-top:5px;}li a{display:block;height: 30px;line-height: 30px;font-size: 16px;color:#000;text-align:center;}li a:hover{background-color:#FFF;color:$mainColor;}li i{position:absolute;left:15%;display:block;width: 30px;height: 25px;background: url('../img/fhlg.fw.png') -280px 0;}}
+}
+#banner{
+    overflow:hidden;
+    width:100%;
+    .container{position:relative;}
+    #auto{
+        position:relative;left:50%;transform:translate(-50%,0);
+        width: 1920px;height: 480px;border:0;
+    .prev{left:31%;background:url('../img/fhlg.fw.png') #000;background-position:-60px -385px;}
+    .next{right:30%;background:url('../img/fhlg.fw.png') #000;background-position:-138px -385px;}}
+    .banner_mes{width: 227px;height: 480px;background-color: #fff;position:absolute;right:-6%;top:0;
+        a{display:block;position:relative;height: 40px;line-height: 40px;border-bottom:1px solid #ccc;font-size:16px;text-align:center;color:#000;i{position:absolute;left:30%;top:20%;display:block;width: 22px;height: 20px;background: url('../img/fhlg.fw.png') -50px 0}}
+        .mes_list{a{font-size: 12px;border:none;text-align:left;height: 30px;line-height: 30px;}a:hover{color:#f00;}}
+    }
+}
+main{
+    background-color: #fff;
+    margin-top:25px;
+    .productlist_one{
+        .lefttime{width: 190px;height: 270px;background-color:#FE0000;
+            h1{padding-top:40px;font-size: 32px;height: 38px;line-height: 38px;text-align:center;color:#fff;}
+            img{background: url('../img/fhlg.fw.png') 0 -200px;height: 33px;width: 130px;margin:50px 20px;border:0;}
+                }
+        .counttime{
+            padding-left:20px;
+            h3{font-size: 16px;color:#fff;text-align:center;padding-bottom:10px;}
+            .hour,.min,.second{display:inline-block;height: 42px;line-height: 42px;width: 42px;border-radius:5px;background-color: #000;color:#fff;font-size: 24px; text-align:center;}
+        }
+       .pro_one_detail{
+            ul{
+            text-align:center;margin-left: 10px;
+                h1{padding-top: 10px;font-size: 14px;color:#000;font-weight: bold;}
+                li{float:left;margin-right: 3px;}
+                img{width: 150px;height: 190px;cursor:pointer;}
+                span{margin-top:10px;padding-left: 5px;display:inline-block;background-color: #f00;color:#fff;height: 30px;line-height: 30px;width: 117px;font-size: 18px;text-align:left;
+                    del{font-size: 12px;padding-left:10px;}}
+                 .catchbuy{border:1px solid #f00;height: 30px;line-height: 30px;display:inline-block;color:#f00;}   
+            }
+       }
+    }
+     // 公共头部sass
+     .topic{
+        border-bottom:2px solid #000;  margin-top:25px;
+            h1{display:line-block;font-size: 20px;font-weight: bold;color:#000;position:relative;margin-left:30px;height: 34px;line-height: 34px;width: 100px;
+                i{display:block;width: 30px;height: 34px;background:url('../img/fhlg.fw.png');position:absolute;left:-30px;}
+              }
+              ul li{float:left;a{font-size: 14px;height: 34px;line-height: 34px;color:#000;padding-right:25px;}a:hover{color:#f00;}}
+    }
+    // 商品公共sass
+    .pro_base{
+        div{overflow:hidden;}
+        img:hover{transform:scale(1.1,1.1);opacity:0.8;}
+        .base_left{width: 600px;}
+        .base_right{text-align:center;
+            a{display:inline-block;padding:10px 0 0 5px;overflow:hidden;}
+            li{float:left;img{width: 150px;height: 150px;}h2{padding-top: 5px;font-size: 12px;height: 24px;line-height: 24px;color:#000;width: 150px;overflow:hidden;}&:hover{color:$mainColor;}span{font-size: 16px;font-weight: bold;color:#f00;}}
+        }
+    }
+}
+footer{
+    margin-top: 20px;padding-top: 60px;background-color: #fff;
+    .footer_top_l{height: 154px;padding-left:50px;width: 273px;border-right:1px solid #ccc;p{padding-top: 15px;strong{font-size: 16px;}span{color:#f00;}}}
+    .footer_top_r .ft1{height: 154px;width: 150px;border-right:1px solid #ccc;text-align:left;padding:0 20px;dt{
+        color:#000;font-size: 14px;font-weight: bold;}dd{padding-top: 5px;}a{color:#bbb;}a:hover{color:skyblue;}}
+    .ft1:last-child{border:0;}
+    .footer_bottom{
+        position:relative;padding:20px 0 0 370px;ul li{float:left;a{padding:0 10px;color:#000;}}
+        i{position:absolute;left:30%;display:inline-block;width: 40px;height: 60px;background: url('../img/fhlg.fw.png') -450px -100px;}
+            }
+  }
