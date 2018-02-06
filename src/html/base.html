@@ -11,9 +11,9 @@
                     <div class="container clearfix">
                             <ul class="ht_left fl">
                                 <li>您好，欢迎来到飞虎乐购!</li>
-                                <li><a href="#">安全登录</a></li>
+                                <li><a href="login.html">安全登录</a></li>
                                 <li>还没加入我们？</li>
-                                <li><a href="#">免费注册</a></li>
+                                <li><a href="login.html">免费注册</a></li>
                             </ul>
                             <ul class="ht_right fr">
                                 <li><a href="#">我的账户</a></li>
@@ -23,11 +23,22 @@
                             </ul>
                     </div>
                 </div>
-                <div id="header_main">
+                <div id="header_main" class="header_base">
                     <div class="container">
                         <h1 class="logo fl"><a href="#"></a></h1>
                         <div class="search ">
-                            <input type="text" id="insert"/>
+                            <input type="text" class="insert"/>
+                            <div class="res"></div>
+                            <a href="#"><input type="submit" value="搜索"id="lookfor"/></a>
+                        </div>
+                    </div>
+                </div>
+                   <!-- 头部搜索框吸顶 -->
+                <div class="catchTop header_base">
+                     <div class="container">
+                        <h1 class="logo1 fl"><a href="#"></a></h1>
+                        <div class="search ">
+                            <input type="text" class="insert"/>
                             <div class="res"></div>
                             <a href="#"><input type="submit" value="搜索"id="lookfor"/></a>
                         </div>
@@ -72,6 +83,9 @@
                 </ul>    
             </div>
         </nav>
+         <!-- 【返回顶部start】 -->
+                <div class="toTop"><span>返回顶部</span></div>
+          <!-- 【返回顶部end】 -->
           <!-- [footer start] -->
         <footer>
               <div class="container">

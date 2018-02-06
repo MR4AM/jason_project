@@ -233,7 +233,7 @@ define(function(){
             return res;
           },
           // 返回顶部函数toTop()
-            toTop(a){  
+            toTop(){ 
             var timer=setInterval(function(){
                // 获取滚动条滚动过的距离
               var scrollT=window.scrollY;

@@ -6,7 +6,7 @@ require.config({
     }
  })
 require(['jquery','com_plus','ajax_plugin'],function($,com){
-    // 加载远程html文件，load取结构
+    // 加载远程html文件，load取html结构
     $('.h_top').load('../html/base.html #header_top');
     $('.logo').load('../html/base.html header .logo')
      $('nav').load('../html/base.html #nav_top');
@@ -24,7 +24,7 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
         $('.zhuce').css('color','#f00');
     }).on('click','#getCode',function(){
         // 获取验证码
-         $('#showCode').html(com.vCode());
+         $('#showCode').html(com.randomCode(4));
     }).on('blur','input',function(e){
           function delempty(selector,val){
                  if(!/^\S{1,}$/.test($(selector).get(0).value.trim())){
@@ -69,7 +69,7 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
                 if($('#pas').get(0).value.trim()!==$('#confirm').get(0).value.trim()){
                     $('.tips').html('输入密码不一致').css({
                         'display':'block',
-                        top:20+$('input').height()*3
+                        // top:20+$('input').height()*3
                     });
                     return false;
                 }else{
@@ -81,7 +81,7 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
                 if(!/^1[34578]\d{9}$/.test($('#phone').get(0).value)){
                     $('.tips').html('手机号码格式不正确').css({
                         'display':'block',
-                        top:30+$('input').height()*4
+                        // top:30+$('input').height()*4
                     });
                     return false;
                 }else{
@@ -93,7 +93,7 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
                 if(!/^[a-z0-9_\-\.]{2,}@[a-z\d\-]{1,63}(\.[a-z\u2E80-\u9FFF]{2,6})+$/.test($('#email').get(0).value)){
                  $('.tips').html('邮箱格式不正确').css({
                         'display':'block',
-                        top:40+$('input').height()*5
+                        // top:40+$('input').height()*5
                     });
                     return false;
             }else{
@@ -102,7 +102,7 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
             break;
             // 校验验证码
             case 'vcode':
-                if($('#vcode').get(0).value!==$('#showCode').get(0).innerText){
+                if($('#vcode').get(0).value.toLowerCase()!==$('#showCode').get(0).innerText.toLowerCase()){
                     console.log($('#vcode').get(0).value,$('#showCode').get(0).innerHTML)
                     $('.tips').html('验证码输入不正确').css('display','block');
                 }else{
@@ -135,7 +135,7 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
                     url:'../api/signcheck.php?account='+account,
                     success:function(res){
                         console.log(res);
-                        res=='yes'?alert('该用户名不存在'):'';
+                        // res=='yes'?alert('该用户名不存在'):'';
                     }
                 })
         }

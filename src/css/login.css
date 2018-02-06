@@ -164,8 +164,8 @@
 
 .loginbox .login_register #lr_register .tips {
   position: absolute;
-  top: 30px;
-  left: 20px;
+  top: -20px;
+  left: 50px;
   display: none;
 }
 

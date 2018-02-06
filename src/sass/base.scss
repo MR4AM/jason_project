@@ -68,21 +68,23 @@ header{
         }
     .ht_right li:nth-child(2){padding:0 15px;}
     }
-
-    #header_main{
-        .logo {
+    .header_base{
+          .logo {
             display:inline-block;
             a{display:block;height: 95px;width: 300px;background: url('../img/fhlg.fw.png')0 -70px; }
         }
         .search{
             position:relative;
             height: 100px;line-height: 100px;margin-left:335px;font-size: 0;
-            #insert{height: 30px;width: 350px;border:1px solid $mainColor;padding:5px;font-size: 16px;}
+            .insert{height: 30px;width: 350px;border:1px solid $mainColor;padding:5px;font-size: 16px;}
             .res{position:absolute;top:66%;z-index:1000;border:1px solid #ccc;display:none;
                 ul{background-color:#fff;width:350px;height: 350px;li{font-size: 16px;margin-left:30px;
                     height:30px;cursor:pointer;}}}
             #lookfor{height: 30px;width: 82px;background-color:$mainColor;cursor:pointer;}
         }
+    }
+    .catchTop{
+        display:none;z-index:1000;width: 100%;height: 100px;background-color: #fff;box-shadow:2px 2px 2px 2px;
     }
 } 
 
@@ -97,3 +99,24 @@ footer{
         i{position:absolute;left:30%;display:inline-block;width: 40px;height: 60px;background: url('../img/fhlg.fw.png') -450px -100px;}
             }
   }
+
+  nav{
+    width: 100%; background-color:$mainColor;
+    .container{position:relative;} 
+    #nav_top{
+        .nav_top_l{
+            font-size: 18px;color:#000;width: 800px;
+            h1{height: 42px;line-height: 42px;width: 186px;display:inline-block;text-align:center;cursor:pointer;}
+            ul{li{float:left;a{display:block;height: 42px;line-height: 42px;padding:0 16px;color:#000;}a:hover{background-color:#333;color:#fff;}}}
+        }
+        .nav_top_r{margin-top: 9px;
+            a{position:relative;display:inline-block;height: 24px;line-height: 24px;background-color: #fff;padding:0 10px;border-radius:5px 0 0 5px;color:#000;
+            span{margin-left: 30px;}
+            i{position:absolute;display:block;width: 20px;height: 20px;background:url('../img/fhlg.fw.png') 0 0; }}
+            button{margin-left: -3px;border-radius:0 5px 5px 0;a{background-color:#FFDE00;color:#000;}a:hover{color:#fff;}}
+        }
+    }
+    #nav_left{z-index:100;position:absolute;left:0;width: 186px;background-color: #F6F6F6;li{position:relative;padding-top:5px;}li a{display:block;height: 30px;line-height: 30px;font-size: 16px;color:#000;text-align:center;}li a:hover{background-color:#FFF;color:$mainColor;}li i{position:absolute;left:15%;display:block;width: 30px;height: 25px;background: url('../img/fhlg.fw.png') -280px 0;}}
+}
+
+.toTop{font-size: 16px;text-align:center;color:#000;border-radius:5px;background-color:$mainColor;height: 80px;width:30px;position:fixed;right:5%;top:50%;transform:translate(0,-50%);cursor:pointer;display:none;}

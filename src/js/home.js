@@ -22,14 +22,14 @@ require.config({
  })
 
 // 
-require(['jquery','com_plus','ajax_plugin','slider','dateFormat'],function($){
+require(['jquery','com_plus','ajax_plugin','slider','dateFormat'],function($,common){
     jQuery(function($){
             // 头部搜索框ajax请求
             var timer;
             var res=$('.res').get(0);
-            $('#insert').get(0).focus();
-            $('#insert').get(0).oninput = function(){
-                let key = $('#insert').get(0).value;
+            $('.insert').get(0).focus();
+            $('.insert').get(0).oninput = function(){
+                let key = $('.insert').get(0).value;
                 clearTimeout(timer);
                 timer = setTimeout(function(){
                     ajax({
@@ -63,6 +63,15 @@ require(['jquery','com_plus','ajax_plugin','slider','dateFormat'],function($){
                     }
                 },500); 
             }
+            // 搜索框吸顶(滚动条滚动时触发)
+           $(window).scroll(function(){
+              common.catchTop($('#header_main').get(0),$('.catchTop').get(0));
+              if(window.scrollY>1000){
+                $('.toTop').css('display','block');
+              }else{
+                $('.toTop').css('display','none');
+              }
+           }) 
             // 轮播右侧滚动公告ajax请求
             var $dl=$('<dl/>').addClass('mes_list');
             ajax({
@@ -84,13 +93,14 @@ require(['jquery','com_plus','ajax_plugin','slider','dateFormat'],function($){
                 width:1900,
                 height:480,
                 duration:3000,
-                imgs:['../img/banner/banner1.jpg','../img/banner/banner2.jpg','../img/banner/banner3.jpg','../img/banner/banner4.jpg'],
+                imgs:['../img/banner/banner1.jpg','../img/banner/banner2.jpg','../img/banner/banner3.jpg','../img/banner/banner4.jpg','../img/banner/banner5.jpg','../img/banner/banner6.jpg'],
                 // 轮播类型：vertical垂直horizontal水平滚动fade淡入淡出
                 type:'fade',
                 page:true,
                 // 是否无缝滚动默认为true，当你需要淡入淡出效果时，请设置为false
                 marquee:false,
             });
+            // 鼠标移入时出现前后按钮
             $('#banner').on('mouseenter',function(){
                 $('.prev').css('display','block');
                 $('.next').css('display','block');
@@ -218,9 +228,10 @@ require(['jquery','com_plus','ajax_plugin','slider','dateFormat'],function($){
             }
         })
 
-
-
-
+        // 返回顶部按钮
+        $('.toTop').click(function(){
+            common.toTop();
+        })
 
     })
 })
