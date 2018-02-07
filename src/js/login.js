@@ -55,12 +55,18 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
             // 密码输入非空及密码强度验证
             case 'pas':
                  delempty('#pas','密码');
+                 if(/^[a-zA-Z\d]{1,}$/.test($('#pas').get(0).value.trim())){
+                    
+                 }else{
+                    $('.tips').html('密码只能是数字或英文字母').css('display','block');
+                 }
                     if(/^[0-9]{6,}$/.test($('#pas').get(0).value.trim())){
                         $('.tips').html('密码安全性较弱').css('display','block');
                     }else if(/^[0-9a-zA-Z]{6,}$/.test($('#pas').get(0).value.trim())){
                         $('.tips').html('密码安全性一般').css('display','block');
                     }
-                    if(/^\S[a-zA-Z@#$%\^\&\*\!]{6,}$/.test($('#pas').get(0).value.trim())){
+                    // @#$%\^\&\*\!特殊字符
+                    if(/^\S[a-zA-Z]{6,}$/.test($('#pas').get(0).value.trim())){
                         $('.tips').html('密码安全性较强').css('display','block');
                     }
                  break;

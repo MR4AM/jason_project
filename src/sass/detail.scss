@@ -1,1 +1,21 @@
 @import 'var';
+.logo1{display:inline-block;a{display:block;height: 95px;width: 300px;background: url('../img/fhlg.fw.png')0 -70px;}
+        }
+.detail_main{height: 1500px;
+    .pro_blog_top{height: 42px;border-bottom: 1px solid #ccc;}
+    .pro_mes_main{
+        padding-top: 15px;.jason-zoom-big{position:absolute;left:300px;top:0;}
+        .pro_mes_main_r{
+            padding-left:310px;
+            h1{font-size: 20px;font-weight: bold;height:60px;line-height: 60px;color:#f00;border-bottom:1px dashed #ccc;}
+            div{border-bottom:1px dashed #ccc;p{padding:10px 0;}}
+            #price{font-size: 14px;margin:20px 0;}
+            #sale{margin:20px 0;font-size: 30px;color:#C7012C;b{font-size: 16px;text-align:center;display:inline-block;height: 30px;line-height: 30px;background-color:#C7012C;color:#fff;}}
+            .buybox{
+                margin-top: 10px;height: 120px;border:1px solid #ccc;background-color:#eee;
+                #buy,#addTocar{margin:10px 10px;border-radius: 5px;display:inline-block;text-align:center;height: 50px;line-height: 50px;width: 150px;font-size: 25px;color:#fff;}
+                 #buy{background-color:#C91D1D;} #addTocar{background-color:#F97700;}
+            }
+        }
+    }
+}

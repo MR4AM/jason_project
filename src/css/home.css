@@ -229,19 +229,15 @@ main .pro_base .base_right {
   text-align: center;
 }
 
-main .pro_base .base_right a {
-  display: inline-block;
-  padding: 10px 0 0 5px;
-  overflow: hidden;
-}
-
 main .pro_base .base_right li {
+  overflow: hidden;
   float: left;
 }
 
 main .pro_base .base_right li img {
   width: 150px;
   height: 150px;
+  cursor: pointer;
 }
 
 main .pro_base .base_right li h2 {

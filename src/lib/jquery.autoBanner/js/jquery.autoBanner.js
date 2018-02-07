@@ -52,13 +52,21 @@
              var len;
              opt.index=0;
              var $span;
-            // 鼠标移入移除
+              var $pre;
+              var $next;
+               // $pre.css('display','none');
+               //  $next.css('display','none');
+            // 鼠标移入移出
             $this.on('mouseenter',function(){
                 clearInterval(timer);
+                 // $pre.css('display','block');
+                 // $next.css('display','block')
             }).on('mouseleave',function(){
                 timer = setInterval(function(){
                     opt.index++;
                     show();
+                    // $pre.css('display','none');
+                    //  $next.css('display','none');
                 },opt.duration);
             }).trigger('mouseleave');
 
@@ -194,9 +202,9 @@
             // 前后按钮函数
             function pre_next(){
                 // 向前按钮
-                var $pre=$('<img/>').addClass('prev').appendTo($this);
+                $pre=$('<img/>').addClass('prev').appendTo($this);
                 // 向后按钮
-                var $next=$('<img/>').addClass('next').appendTo($this);
+               $next=$('<img/>').addClass('next').appendTo($this);
                 $this.on('click','.prev',function(){
                         if(opt.index<1){
                           if(opt.marquee){

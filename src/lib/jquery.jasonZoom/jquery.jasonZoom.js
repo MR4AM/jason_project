@@ -1,5 +1,5 @@
 ;(function($){
-	$.fn.gdsZoom = function(options){
+	$.fn.jasonZoom = function(options){
 		// 默认值
 		var defaults = {
 			// 放大区域的宽高
@@ -10,9 +10,10 @@
 			position:'right',//left,top,bottom,right
 
 			// 小图与大图的间距
-			gap:15
+			gap:15,
+			positionSetX:300,
+			positionSetY:0
 		}
-
 		return this.each(function(){
 			var opt = $.extend({},defaults,options);
 
@@ -22,7 +23,7 @@
 
 			// 添加特定类
 			// 设置样式
-			$small.addClass('gds-zoom');
+			$small.addClass('jason-zoom');
 
 			init();
 
@@ -31,7 +32,7 @@
 			// 绑定事件
 			function init(){
 				// 创建大图区域
-				var $big = $('<div/>').addClass('gds-zoom-big');
+				var $big = $('<div/>').addClass('jason-zoom-big');
 
 				$big.css({
 					width:opt.width,
@@ -52,22 +53,21 @@
 				}else if(opt.position === 'bottom'){
 					left = $small.offset().left;
 					top = $small.offset().top + $small.outerHeight() + opt.gap;
+				}else if(opt.position ==='zidingyi'){
+					left:opt.positionSetX;
+					top:opt.positionSetY;
 				}
-
 				$big.css({
 					left:left,
 					top:top
 				});
-
-
 				// 创建大图
 				var $bigImg = $('<img/>').attr('src',$smallImg.attr('data-big') || $smallImg[0].src);
-
 				// 大图写入$big
 				$bigImg.appendTo($big);
 
-				// 写入页面
-				$big.appendTo('body');
+				// 写入需要放大的盒子
+				$big.appendTo($small);
 
 
 				// 创建放大镜
