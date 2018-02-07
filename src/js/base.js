@@ -40,35 +40,87 @@ define(function(){
                     }
                 },500); 
             }
-            // return this;
+            
         },
          // 加载远程html文件，load取html结构
         loading(selheader,selnav,selfooter){
                console.log(this.searchAjax);
                 $(selheader).load('../html/base.html header',function(){
-                 // 头部搜索框ajax请求
-                // this.searchAjax();
-               // // 搜索框吸顶(滚动条滚动时触发)
-               // $(window).scroll(function(){
-               //    catchTop($('#header_main').get(0),$('.catchTop').get(0));
-               //    if(window.scrollY>1000){
-               //      $('.toTop').css('display','block');
-               //    }else{
-               //      $('.toTop').css('display','none');
-               //    }
-               // })
             });
              $(selnav).load('../html/base.html #nav_top');
              $('.toTop').load('../html/base.html .toTop',function(){    
              });
             $(selfooter).load('../html/base.html footer');
         },
-        // toTop(){
-        //  // 返回顶部按钮
-        //     $('.toTop').click(function(){
-        //         toTop();
-        //     })  
-        // } 
+        // 三级联动
+        threeAction(){
+            let  province=document.querySelector('#province');
+            let  city=document.querySelector('#city');
+            let  count=document.querySelector('#count');
+            let proIndex = 0;
+            let cityIndex = 0;
+            // 引用封装好的ajax插件发起异步请求
+             ajax({
+                data:{city:city},
+                type:'get',
+                url:'../api/region.json',
+                success:function(res){
+                    let arr=[];
+                    arr=res.regions;
+                    arr.forEach(function(item,idx){
+                      var options=document.createElement('option');
+                        options.innerHTML=item.name;
+                        province.appendChild(options);
+                    })
+                    // 省份改变时，城市和区县对应改变   
+                    province.onchange=function(){
+                        getCity();
+                        getCount();
+                    }
+                    // 城市改变时，区县对应改变
+                     city.onchange=function(){
+                        getCount();
+                        checkWeather(city);
+                    }
+                    // 县区内容改变时查询天气
+                    count.onchange=function(){
+                        checkWeather(count);
+                    }
+                    getCity();
+                    getCount();
+                    //获取城市的数据
+                        function getCity(){
+                            //清除原来的城市信息
+                            city.innerHTML = "";
+                            //设置省份下拉列表备选选项的索引值（实现三级联动对应的核心）。
+                            proIndex = province.selectedIndex;
+                            // 遍历市区数组
+                            var cityList=arr[proIndex].regions;
+                            for(var j = 0; j <cityList.length;j++) {
+                                var coption= document.createElement('option');
+                                coption.innerHTML =cityList[j]['name'];
+                                city.appendChild(coption);
+                            }
+                        }
+                    //获取区县的数据
+                    function getCount() {
+                        //清除原来的区县信息
+                        count.innerHTML = "";
+                        //设置城市下拉列表备选选项的索引值（实现三级联动对应的核心）。
+                        cityIndex = city.selectedIndex;
+                        // 遍历区县数组
+                        var countList = arr[proIndex].regions[cityIndex].regions; 
+                        for(let k = 0; k < countList.length; k++) {
+                            var doption = document.createElement('option');
+                            doption.innerHTML = countList[k]['name'];
+                            res=countList[k]['name'];
+                            count.appendChild(doption);
+                        }
+                    }
+                }
+            })
+        },
+        // 购物车去重
     }
 })
 

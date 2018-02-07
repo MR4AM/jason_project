@@ -1,8 +1,14 @@
 @import 'var';
-.container{
-    width:980px;
-
-    color:$mainColor;
-
-    font-size:$smallFontSize;
-}
+ #header_top{
+    background-color: #EBEBEB;border-bottom:1px solid #ccc;
+    li{float:left; height: 28px;line-height: 28px;padding-right: 8px;}
+    .ht_left{
+        li:nth-child(2) a,li:nth-child(4) a{color:#0066FF;}
+        }
+    .ht_right li:nth-child(2){padding:0 15px;}
+    }
+    .car_main{
+        padding-top: 100px;
+        div{border:1px solid #ccc;padding:10px;margin-top:10px;}
+        img{width: 130px;height: 100px;}
+    }

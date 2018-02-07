@@ -29,7 +29,7 @@
 }
 
 .detail_main .pro_mes_main .pro_mes_main_r {
-  padding-left: 310px;
+  padding-left: 320px;
 }
 
 .detail_main .pro_mes_main .pro_mes_main_r h1 {
@@ -77,8 +77,24 @@
   background-color: #eee;
 }
 
+.detail_main .pro_mes_main .pro_mes_main_r .buybox #jian, .detail_main .pro_mes_main .pro_mes_main_r .buybox #add {
+  width: 22px;
+  height: 22px;
+  border: 1px solid #ccc;
+}
+
+.detail_main .pro_mes_main .pro_mes_main_r .buybox #pro_qty {
+  text-align: center;
+  display: inline-block;
+  width: 80px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid #ccc;
+}
+
 .detail_main .pro_mes_main .pro_mes_main_r .buybox #buy, .detail_main .pro_mes_main .pro_mes_main_r .buybox #addTocar {
   margin: 10px 10px;
+  cursor: pointer;
   border-radius: 5px;
   display: inline-block;
   text-align: center;
