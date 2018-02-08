@@ -5,7 +5,6 @@
     // 判断用户名是否存在
     $firstTry=$conn->query("select * from user where username ='$tryname '");
       if($firstTry->num_rows !== 0){
-            echo "exsit";
+            echo "exsit";    
        }
-
   ?>

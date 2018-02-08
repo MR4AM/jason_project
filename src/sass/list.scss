@@ -2,14 +2,17 @@
 .logo1{display:inline-block;a{display:block;height: 95px;width: 300px;background: url('../img/fhlg.fw.png')0 -70px;}
         }
 .list_main{height: 1500px;
-    .list_main_l{width: 230px;height: 1500px;}
+    .list_main_l{
+        width: 230px;height: 1500px;
+         #nav_left{z-index:100;position:absolute;width: 186px;background-color: #F6F6F6;li{position:relative;padding-top:5px;}li a{display:block;height: 30px;line-height: 30px;font-size: 16px;color:#000;text-align:center;}li a:hover{background-color:#FFF;color:$mainColor;}li i{position:absolute;left:15%;display:block;width: 30px;height: 25px;background: url('../img/fhlg.fw.png') -280px 0;}}
+    }
     .list_main_r{
         .list_main_r_m{
-            li{float:left;padding:10px 15px;}
-            img{height: 140px;}
+            li{float:left;padding:10px 15px;position:relative;}
+            img{height: 140px;cursor:pointer;}
             h2{font-size: 14px;color:#000;padding:10px 0;width: 200px;height: 30px;overflow:hidden;}
             span{font-size: 14px;color:#f00;padding:5px 0;}
-            button{background-color:$mainColor;color:#fff;padding:5px 5px;margin-right:5px;}
+            button{background-color:$mainColor;color:#fff;padding:5px 5px;margin-right:5px;cursor:pointer;}
         }
     }
 }

@@ -49,7 +49,7 @@ main{
     // 商品公共sass
     .pro_base{
         div{overflow:hidden;}
-        img:hover{transform:scale(1.1,1.1);opacity:0.8;}
+        img:hover{transform:scale(1.1,1.1);opacity:0.8;cursor:pointer;}
         .base_left{width: 600px;}
         .base_right{text-align:center;
             li{overflow:hidden;float:left;img{width: 150px;height: 150px;cursor:pointer;}h2{padding-top: 5px;font-size: 12px;height: 24px;line-height: 24px;color:#000;width: 150px;overflow:hidden;}&:hover{color:$mainColor;}span{font-size: 16px;font-weight: bold;color:#f00;}}

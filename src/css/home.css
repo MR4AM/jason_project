@@ -219,6 +219,7 @@ main .pro_base div {
 main .pro_base img:hover {
   transform: scale(1.1, 1.1);
   opacity: 0.8;
+  cursor: pointer;
 }
 
 main .pro_base .base_left {

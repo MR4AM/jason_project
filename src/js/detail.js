@@ -45,7 +45,7 @@ require(['jquery','com_plus','base','config','zoom','ajax_plugin'],function($,co
                     $.each($(res),function(idx,item){
                           var imgurl=item.imgurl.substring(1);
                           imgurl='.'+imgurl;
-                        var $pm_l=$('<img src="'+imgurl+'"/>').appendTo('.pro_mes_main_l');
+                        var $pm_l=$('<img src="'+imgurl+'" id="proimg"/>').appendTo('.pro_mes_main_l');
                         var det_box=$(`
                             <h1>${item.name}</h1>
                             <div>
@@ -97,6 +97,22 @@ require(['jquery','com_plus','base','config','zoom','ajax_plugin'],function($,co
                                 break;
                                 // 添加购物车
                                 case 'addTocar':
+                                    // 添加购物车效果
+                                    $img=$('#proimg');
+                                    $cloneImg=$img.clone();
+                                    $cloneImg.css({
+                                        position:'absolute',
+                                        left:$img.offset().left,
+                                        top:$img.offset().top,
+                                        width:$img.outerWidth()
+                                    });
+                                    $('body').append($cloneImg);
+                                    $cloneImg.animate({
+                                        left: $('.nav_top_r').offset().left,
+                                        top:$('.nav_top_r').offset().top,
+                                        opcatity:0.5,
+                                        width:0,
+                                    },500);
                                     // 将购物信息添加到cookie中
                                     res.push(item);
                                     res[res.length-1].qty=num;
@@ -105,9 +121,6 @@ require(['jquery','com_plus','base','config','zoom','ajax_plugin'],function($,co
                                     var now=new Date();
                                     now.setDate(now.getDate()+7);
                                     document.cookie='res='+JSON.stringify(res)+';expires='+now.toUTCString()+';path=/';
-                                    location.href='car.html';
-                                    console.log(document.cookie);
-
                                 break;
                                 // 去结算
                                 case 'buy':

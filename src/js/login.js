@@ -14,7 +14,7 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
    $('.loginbox').on('change','input',function(e){
         switch(e.target.id){
             case 'account':
-            // 用户名是否被占用验证
+            // 用户名是否注册验证
                 var name=$('#account').get(0).value;
                 $.ajax({
                     url:'../api/check.php',
@@ -22,16 +22,36 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
                     success:function(data){
                         console.log(data);
                         if(data=='exsit'){
-                             // $('.tips').html('该名字已被注册了哦，请换一个吧！').css('display','block');
-                             alert('该名字已被注册了哦，请换一个吧！');
-                                return false;
                         }else{
-                            checkLength=1;
-                            console.log(checkLength);
+                             alert('该用户不存在');
                         }
                     }
                 })
+                break;    
         }
+   }).on('click','#signin',function(){
+            var password=$('#password').val();
+            var username=$('#account').val();
+            $.ajax({
+                 url:'../api/login.php',
+                    data:{'username':username,'password':password},
+                    success:function(data){
+                        console.log(data);
+                        if(data=='success'){
+                            alert(''+username+'您好，欢迎登录飞虎乐购，我们将竭诚为您服务！')
+                            location.href="../home.html";
+                        }else{
+                             alert('密码输入有误');
+                        }
+                    }
+            })
+   }).on('click','#check',function(){
+          // 如果勾选七天免登录
+           if($('#check').get(0).checked){
+                 var now=new Date();
+                now.setDate(now.getDate()+7);
+                document.cookie='username='+$('#account').val()+';expires='+now.toUTCString()+';path=/';
+                console.log(document.cookie);
+           }
    })
-
 })

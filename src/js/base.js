@@ -120,7 +120,28 @@ define(function(){
                 }
             })
         },
-        // 购物车去重
+        // 添加购物车效果
+      addcarAnimation(fathersel,btnsel,targetsel,duration){
+           $(fathersel).on('click',btnsel,function(){
+                $li=$(this).closest('li');
+                $img=$li.children('img');
+                $cloneImg=$img.clone();
+                console.log($img.offset().left);
+                $cloneImg.css({
+                    position:'absolute',
+                    left:$img.offset().left,
+                    top:$img.offset().top,
+                    width:$img.outerWidth()
+                });
+            $('body').append($cloneImg);
+            $cloneImg.animate({
+                left: $(targetsel).offset().left,
+                top:$(targetsel).offset().top,
+                opcatity:0.5,
+                width:0,
+            },duration);
+          })  
+        },
     }
 })
 

@@ -56,7 +56,10 @@ require(['jquery','com_plus','base','ajax_plugin','slider','dateFormat'],functio
             // 根据导航条分类发起ajax请求
              var data_gory;
              var par='';
-          $('#nav_left').on('click',function(e){
+             cateGory('#nav_left');
+             function cateGory(selector){
+                 $(selector).on('click',function(e){
+                    console.log(e.target.id);
                 switch(e.target.id){
                     case 'phone':
                     data_gory=e.target.id;
@@ -130,6 +133,7 @@ require(['jquery','com_plus','base','ajax_plugin','slider','dateFormat'],functio
                     break;
                 }
             })
+        }
               function listHref(data){
                  par+='?'+'category'+'='+data;
                 location.href='html/list.html'+par;
@@ -205,8 +209,8 @@ require(['jquery','com_plus','base','ajax_plugin','slider','dateFormat'],functio
             }
         // 商品模块左边广告栏
         function pro_modul_rendom(img1,img2,img3,selector){
-            var $par=$('<div class="fl"><a href="#"><img src="'+img1+'"></a></div>'+
-                '<div><a href="#"><img src="'+img2+'"/></a><a href="#"><img src="'+img3+'"/></a></div>').appendTo(selector);
+            var $par=$('<div class="fl"><img src="'+img1+'"></div>'+
+                '<div><img src="'+img2+'"/><img src="'+img3+'"/></div>').appendTo(selector);
         }
         pro_modul_rendom('../img/phone/ph1.jpg','../img/phone/ph2.jpg','../img/phone/ph3.jpg','.phone_det_left');
         pro_modul_rendom('../img/clothes/cl1.jpg','../img/clothes/cl2.jpg','../img/clothes/cl3.jpg','.clothes_det_left');
@@ -216,6 +220,8 @@ require(['jquery','com_plus','base','ajax_plugin','slider','dateFormat'],functio
         pro_modul_rendom('../img/sport_outside/so1.jpg','../img/sport_outside/so2.jpg','../img/sport_outside/so3.jpg','.sport_outside_det_left ');
         pro_modul_rendom('../img/makeup/mk1.jpg','../img/makeup/mk2.jpg','../img/makeup/mk3.jpg','.makeup_det_left ');
         pro_modul_rendom('../img/heathy_food/hf1.jpg','../img/heathy_food/hf2.jpg','../img/heathy_food/hf3.jpg','.heathy_food_det_left ');
+        // 点击商品模块左边广告栏实现跳转到列表页
+             cateGory('main .container');
         // 返回顶部按钮
         $('.toTop').click(function(){
             common.toTop();
@@ -299,9 +305,9 @@ require(['jquery','com_plus','base','ajax_plugin','slider','dateFormat'],functio
                 })
             }
         })
-        // 延时500ms执行点击页面跳转到详情页
+        // 延时500ms执行点击首页商品跳转到详情页
         setTimeout(function(){
-           $('main').on('click',function(e){
+           $('main').on('click','li img',function(e){
                 detailAjax(e.target.id);
                 detailHref(e.target.id);
           })
