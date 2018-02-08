@@ -49,28 +49,64 @@ require(['jquery','com_plus','base','config','ajax_plugin'],function($,common,ba
                      cookie_arr=JSON.parse(arr[1]);
                   }
                 }); 
-        console.log(cookie_arr);
-        var car_tabel=`<tr>
-            <td>飞虎商品</td>
-            <td></td>
-            <td>商品名称</td>
-            <td>商品数量</td>
-            <td>商品单价</td>
-            <td>飞虎总价</td>
-            <td>操作</td></tr>`;
-            $(car_tabel).prependTo('.car_main .container');
-        $.each($(cookie_arr),function(idx,item){
-            $(`<div>
-                <img src="${item.imgurl}"/>
-                <span>${item.name}</span>
-                <span>数量：${item.qty}</span>
-                <span>飞虎单价：${item.sale}</span>
-                <span>飞虎总价：${item.sale*item.qty}</span>
-                </div>`).appendTo('.car_main .container');
-            var total=(item.sale*item.qty);
-              total+=total;
-            $('.totalPrice').get(0).innerHTML='总金额￥'+total;
+        createCarlist(cookie_arr);
+        function createCarlist(arr){
+            var total=0;
+            var car_thead=`<tr>
+                <td class="checkbox"><input type="checkbox" />全选</td>
+                <td class="colnum">
+                <span>飞虎商品</span>
+                <span>商品名称</span>
+                <span>商品数量</span>
+                <span>商品单价</span>
+                <span>飞虎总价</span>
+                <span>操作</span>
+                </td></tr>`;
+                $(car_thead).prependTo('.car_table');
+            $.each($(arr),function(idx,item){
+                $(`<tr>
+                    <td class="checkbox"><input type="checkbox" /></td>
+                    <td class="colcontent">
+                    <div id="${item.id}">
+                    <span id="propic"><img src="${item.imgurl}"/></span>
+                    <span id="proname">${item.name}</span>
+                    <span id="proqty">数量：${item.qty}</span>
+                    <span id="prosale">飞虎单价：${item.sale}</span>
+                    <span id="prototal">飞虎总价：${item.sale*item.qty}</span>
+                    <span id="act"><b id="del">删除</b>/<strong>收藏</strong></span>
+                    </div></td></tr>`).appendTo('.car_table');
+                    total+=item.sale*item.qty;
+            }) 
+            $('.total_mon').html('总金额：'+'<span style="color:red;">'+'￥'+total+'</span>')
+        }
+        // 删除单条购物车及清空购物车操作
+        $('.car_main').on('click',function(e){
+            switch(e.target.id){
+                case 'del':
+                // 从页面上移除所有单挑商品
+                var targetTr=e.target.parentNode.parentNode.parentNode.parentNode;
+                $('.car_table').get(0).removeChild(targetTr);
+                // 移除商品列表对应数组的商品对象并更新cookie
+                $.each($(cookie_arr),function(idx,item){
+                    if(item.id==e.target.parentNode.parentNode.id){
+                        $('.car_table').html('');
+                        cookie_arr.splice(idx,1);
+                        createCarlist(cookie_arr);
+                        uploadCookie(cookie_arr);
+                    }
+                })
+                break;
+                case 'clearAll':
+                cookie_arr=[];
+                $('.car_table').html('');
+                createCarlist(cookie_arr);
+                uploadCookie(cookie_arr);
+                break;
+                case 'shopmore':
+                location.href='../home.html';
+            }
         })
+
             
     
       
