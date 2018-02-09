@@ -9,16 +9,13 @@
   background: url("../img/fhlg.fw.png") 0 -70px;
 }
 
-.detail_main {
-  height: 1500px;
-}
-
 .detail_main .pro_blog_top {
   height: 42px;
   border-bottom: 1px solid #ccc;
 }
 
 .detail_main .pro_mes_main {
+  position: relative;
   padding-top: 15px;
 }
 
@@ -26,6 +23,32 @@
   position: absolute;
   left: 300px;
   top: 0;
+}
+
+.detail_main .pro_mes_main .pro_mes_main_l img {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.detail_main .pro_mes_main .imglist {
+  margin-top: 20px;
+  position: absolute;
+  top: 350px;
+}
+
+.detail_main .pro_mes_main .imglist li {
+  float: left;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+}
+
+.detail_main .pro_mes_main .imglist li img {
+  height: 50px;
+  width: 50px;
+}
+
+.detail_main .pro_mes_main .imglist .li_active {
+  border: 1px solid #FFC400;
 }
 
 .detail_main .pro_mes_main .pro_mes_main_r {

@@ -53,7 +53,7 @@ require(['jquery','com_plus','base','config','ajax_plugin'],function($,common,ba
         function createCarlist(arr){
             var total=0;
             var car_thead=`<tr>
-                <td class="checkbox"><input type="checkbox" />全选</td>
+                <td class="checkbox"><input type="checkbox" id="all"/>全选</td>
                 <td class="colnum">
                 <span>飞虎商品</span>
                 <span>商品名称</span>
@@ -65,7 +65,7 @@ require(['jquery','com_plus','base','config','ajax_plugin'],function($,common,ba
                 $(car_thead).prependTo('.car_table');
             $.each($(arr),function(idx,item){
                 $(`<tr>
-                    <td class="checkbox"><input type="checkbox" /></td>
+                    <td class="checkbox"><input type="checkbox"/></td>
                     <td class="colcontent">
                     <div id="${item.id}">
                     <span id="propic"><img src="${item.imgurl}"/></span>
@@ -103,9 +103,16 @@ require(['jquery','com_plus','base','config','ajax_plugin'],function($,common,ba
                 uploadCookie(cookie_arr);
                 break;
                 case 'shopmore':
-                location.href='../home.html';
+                location.href='../index.html';
+               
             }
         })
+         // 全选购物记录
+        $('#all').on('click',function(){
+              $('.car_table tr').find(':checkbox').prop('checked',this.checked);
+        })
+       
+        
 
             
     

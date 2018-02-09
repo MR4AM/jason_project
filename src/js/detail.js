@@ -45,7 +45,21 @@ require(['jquery','com_plus','base','config','zoom','ajax_plugin'],function($,co
                     $.each($(res),function(idx,item){
                           var imgurl=item.imgurl.substring(1);
                           imgurl='.'+imgurl;
+                          var listurl;
+                          listurl='../img/'+item.category+'/';
+                            console.log(listurl);
                         var $pm_l=$('<img src="'+imgurl+'" id="proimg"/>').appendTo('.pro_mes_main_l');
+                        var imglist=$(`
+                            <div class="imglist fl">
+                                <ul>
+                                <li><img src="${listurl}1001.jpg"/></li>
+                                <li><img src="${listurl}1002.jpg"/></li>
+                                <li><img src="${listurl}1003.jpg"/></li>
+                                <li><img src="${listurl}1004.jpg"/></li>
+                                <li><img src="${listurl}1005.jpg"/></li>
+                                </ul>
+                            </div>
+                            `).appendTo('.pro_mes_main');
                         var det_box=$(`
                             <h1>${item.name}</h1>
                             <div>
@@ -140,10 +154,18 @@ require(['jquery','com_plus','base','config','zoom','ajax_plugin'],function($,co
                                 positionSetY:0,
                                 gap:0
                             });
+                           // 点击小图片实现图片切换并添加放大镜效果
+                            $('.imglist').on('click','img',function(){
+                                $('#proimg').attr({
+                                    src:this.src,
+                                    'data-big':this.dataset.big || this.src
+                                })
+                                $(this).parents('li').addClass('li_active').siblings('li').removeClass('li_active');
+                            })
                     })
                 }
             }) 
-        }  
+        } 
         getAndajax('../api/listtodetail.php');
 
        

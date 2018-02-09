@@ -7,7 +7,7 @@
     $id = isset($_GET['id']) ? $_GET['id'] : null;
 
     // 编写sql语句
-    $sql = "select * from home_goods where";
+    $sql = "select * from list_goods where";
 
     if($id){
      $sql .= " id='$id' and";

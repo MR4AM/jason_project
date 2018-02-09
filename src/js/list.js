@@ -23,7 +23,7 @@ require(['jquery','com_plus','base','ajax_plugin'],function($,common,base){
             common.toTop();
         })
         // 远程加载html导航条结构
-        $('.list_main_nav').load('../home.html #nav_left',function(){
+        $('.list_main_nav').load('../index.html #nav_left',function(){
                // 根据导航条分类发起ajax请求
              var data_gory;
              var par='';
@@ -127,18 +127,23 @@ require(['jquery','com_plus','base','ajax_plugin'],function($,common,base){
         var url=par.substring(1);
         url=url.split('=');
         par=url[1];
-        console.log(par);
+        var pro_arr=[];
+        function create(arr){
+           $.each($(arr),function(idx,item){
+                var ul=$.map($(arr),function(val){
+                    return '<li><img src="'+val.imgurl+'" id="'+val.id+'"/><h2>'+val.name+'</h2><span>￥'+val.price+'</span><br/><button>快速购买</button><button id="addTocar">加入购物车</button></li>'
+                }).join('\n');
+                $('.list_main_r_m').html(ul);
+           })
+        }
+
         $.ajax({
                 url:'../api/list.php',
                 dataType:'json',
                 data:{category:par},
                 success:function(res){
-                   $.each($(res),function(idx,item){
-                        var ul=$.map($(res),function(val){
-                            return '<li><img src="'+val.imgurl+'" id="'+val.id+'"/><h2>'+val.name+'</h2><span>￥'+val.price+'</span><br/><button>快速购买</button><button id="addTocar">加入购物车</button></li>'
-                        }).join('\n');
-                        $('.list_main_r_m').html(ul);
-                   })
+                    pro_arr=res;   
+                    // create(res);
                 }
             }) 
 
@@ -167,5 +172,61 @@ require(['jquery','com_plus','base','ajax_plugin'],function($,common,base){
             },500)
         // 添加购物车效果
         base.addcarAnimation('.list_main_r_m','#addTocar','.nav_top_r',500);
+        // 分页加载
+            var pageNo=1;
+            var qty=20;
+            tab(pageNo,qty);
+            function tab(pageNo,qty){
+                $.ajax({
+                    url:'../api/page.php',
+                    data:{'category':par,'pageNo':pageNo,'qty':qty},
+                    dataType:'json',
+                    success:function(res){
+                        var data_arr=res.data;
+                        create(data_arr);
+                         // 价格查询及排序
+                            $('.selectbox').on('click',function(e){
+                                switch(e.target.id){
+                                    case 'lowTohigh':
+                                    var arr1=data_arr.sort(function(a,b){return a.price- b.price});
+                                    create(arr1);
+                                    break;
+                                    case 'highTolow':
+                                     var arr2=data_arr.sort(function(a,b){return a.price- b.price}).reverse();
+                                    create(arr2);
+                                    break;
+                                    case 'priceCheck':
+                                    var minPrice=$('#low').val();
+                                    var maxPrice=$('#high').val();
+                                    priceFliter(minPrice,maxPrice);
+                                    function priceFliter(minPrice,maxPrice){
+                                        var arr3=data_arr.filter(function(item){
+                                            return item.price>=minPrice &&item.price<=maxPrice;
+                                        });
+                                        create(arr3);
+                                    }
+                                    break;
+                                }
+                            })
+                        // 处理分页
+                        let pageQty = Math.ceil(res.total/res.qty);
+                        $('#page').html('');
+                        for(let i=1;i<=pageQty;i++){
+                            var span=$('<span/>');
+                            console.log(span);
+                            $(span).html(i);
+                            if(i===res.pageNo){
+                               $(span).addClass('active');
+                            }
+                            $(span).appendTo('#page');
+                        }
+                        $('')
+                    }
+                })    
+            }
+        $('#page').on('click',function(e){
+            let newpageNo=e.target.innerText*1;
+             tab(newpageNo,qty);
+        })
       
 })

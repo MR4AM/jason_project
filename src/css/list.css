@@ -9,10 +9,6 @@
   background: url("../img/fhlg.fw.png") 0 -70px;
 }
 
-.list_main {
-  height: 1500px;
-}
-
 .list_main .list_main_l {
   width: 230px;
   height: 1500px;
@@ -53,10 +49,39 @@
   background: url("../img/fhlg.fw.png") -280px 0;
 }
 
+.list_main .list_main_r {
+  margin: 20px 0 0 200px;
+  background-color: #F6F6F6;
+}
+
+.list_main .list_main_r .list_main_r_t {
+  font-size: 16px;
+}
+
+.list_main .list_main_r .list_main_r_t input {
+  height: 20px;
+}
+
+.list_main .list_main_r .list_main_r_t button {
+  height: 30px;
+  background-color: #f00;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .list_main .list_main_r .list_main_r_m li {
   float: left;
-  padding: 10px 15px;
+  text-align: center;
+  background-color: #fff;
+  margin: 10px 5px;
   position: relative;
+  border: 1px solid #ddd;
+}
+
+.list_main .list_main_r .list_main_r_m li:hover {
+  box-shadow: 3px 3px 3px 3px #ddd;
 }
 
 .list_main .list_main_r .list_main_r_m img {
@@ -85,4 +110,20 @@
   padding: 5px 5px;
   margin-right: 5px;
   cursor: pointer;
+}
+
+.list_main .list_main_r #page span {
+  display: inline-block;
+  margin: 5px;
+  width: 40px;
+  line-height: 1.8;
+  text-align: center;
+  background-color: #dfdfdf;
+  color: #666;
+  cursor: pointer;
+}
+
+.list_main .list_main_r #page span.active {
+  background-color: #fc0;
+  color: #fff;
 }

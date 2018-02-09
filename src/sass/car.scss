@@ -7,8 +7,13 @@
         }
     .ht_right li:nth-child(2){padding:0 15px;}
     }
+ .header_main{
+    background-color:#fff;
+          h1{background: url('../img/fhlg.fw.png')0 -70px no-repeat;height: 100px;width: 300px;}
+        .carstep{display:block;height: 95px;width: 800px;background: url('../img/fhlg.fw.png')0 -520px no-repeat; }
+    }
     .car_main{
-        padding-top: 100px;width: 100%;
+        padding-top: 100px;width: 100%;background-color:#fff;
         .car_table{
             border:1px solid #ccc;
             .checkbox{text-align:center;}

@@ -1,10 +1,18 @@
 @import 'var';
 .logo1{display:inline-block;a{display:block;height: 95px;width: 300px;background: url('../img/fhlg.fw.png')0 -70px;}
         }
-.detail_main{height: 1500px;
+.detail_main{
     .pro_blog_top{height: 42px;border-bottom: 1px solid #ccc;}
-    .pro_mes_main{
+    .pro_mes_main{position:relative;
         padding-top: 15px;.jason-zoom-big{position:absolute;left:300px;top:0;}
+        .pro_mes_main_l{
+            img{border:1px solid #ccc;padding:10px;}
+        }
+      .imglist{
+            margin-top: 20px;position:absolute;top:350px;
+            li{float:left;margin:0 5px;border:1px solid #ccc;img{height: 50px;width: 50px;}}
+            .li_active{border:1px solid $mainColor;}
+        }
         .pro_mes_main_r{
             padding-left:320px;
             h1{font-size: 20px;font-weight: bold;height:60px;line-height: 60px;color:#f00;border-bottom:1px dashed #ccc;}

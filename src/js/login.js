@@ -39,7 +39,7 @@ require(['jquery','com_plus','ajax_plugin'],function($,com){
                         console.log(data);
                         if(data=='success'){
                             alert(''+username+'您好，欢迎登录飞虎乐购，我们将竭诚为您服务！')
-                            location.href="../home.html";
+                            location.href="../index.html";
                         }else{
                              alert('密码输入有误');
                         }
