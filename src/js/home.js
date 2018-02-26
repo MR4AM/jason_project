@@ -185,20 +185,21 @@ require(['jquery','com_plus','base','ajax_plugin','slider','dateFormat'],functio
                 $('.next').css('display','none');
             })
             // 秒杀倒计时
-            var lefttime=setInterval(autotime,1000);
             function autotime(){
                 var now=new Date();
-                var date_str=now.format('YYYY/M/D');
-                var new_str=String(date_str.slice(-1)*1+1);
-                date_str=date_str.substr(0,7);
+                var date_str=now.format('YYYY/MM/DD');
+                var new_str=String(date_str.slice(-2)*1+1);
+                date_str=date_str.substr(0,8);
                 var final_str=date_str+new_str;
-                // console.log(final_str);
+                console.log(final_str);
                 var future=new Date(final_str);
                 var daojishi=parseInt((Date.parse(future)-Date.parse(now))/1000);
+                console.log(daojishi)
                 // 将相差的毫秒数转化成天/时/分/秒
                var secLeft=daojishi%60;
                var minLeft=parseInt(daojishi/60)%60;
                var hourLeft=Math.floor(daojishi/60/60)%24;
+               console.log(secLeft,minLeft,hourLeft)
                // 补0操作
                secLeft<10?secLeft='0'+secLeft:secLeft;
                minLeft<10?minLeft='0'+minLeft:minLeft;
@@ -207,6 +208,7 @@ require(['jquery','com_plus','base','ajax_plugin','slider','dateFormat'],functio
               $('.min').html(minLeft);
               $('.second').html(secLeft);
             }
+            var lefttime=setInterval(autotime,1000);
         // 商品模块左边广告栏
         function pro_modul_rendom(img1,img2,img3,selector){
             var $par=$('<div class="fl"><img src="'+img1+'"></div>'+
